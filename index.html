@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link href="./assets/css/mdb.min.css" rel="stylesheet" />
+    <link href="./assets/css/fa.min.css" rel="stylesheet" />
+    <link href="./assets/css/custom.css" rel="stylesheet" />
+
+        <!-- JS -->
+    <script type="text/javascript" src="./assets/js/custom.js"></script>
+    <title>Select text with ChatGPT</title>
+    <style>
+        .container {
+            min-width: 350px;
+            max-width: 350px;
+            min-height: 700px;
+        }
+        
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        
+
+        <div class="row">
+            <div class="col-md-6">
+                <h4 class="mt-3">Settings</h4>
+                <div class="form-floating mt-4">
+                    <select class="form-select" id="language-select">
+                    </select>
+                    <label for="language-select">Select language</label>
+                </div>
+                <div class="form-outline mt-3">
+                    <input type="text" id="apiKeyInput" class="form-control form-control-lg" />
+                    <label class="form-label" for="formControlLg">API Key</label>
+                  </div>
+                  <div class="form-outline mt-3">
+                    <input type="text" id="leadingPromptInput" class="form-control form-control-lg" />
+                    <label class="form-label" for="formControlLg">Leading Propmpt</label>
+                  </div>
+                  
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <button class="btn" id="saveSettingsButton">
+                    Save Settings
+                </button>
+            </div>
+        </div>
+        <h4 class="mt-5">FAQ</h4>
+        <div class="accordion w-100 mt-4" id="basicAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                  data-mdb-target="#basicAccordionCollapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  Where do I find the API Key?
+                </button>
+              </h2>
+              <div id="basicAccordionCollapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                data-mdb-parent="#basicAccordion" style="">
+                <div class="accordion-body">
+                  <ol class="list-group list-group-light list-group-numbered">
+                    <li class="list-group-item">Go to OpenAI's Platform website at <a href="https://platform.openai.com>platform.openai.com</a> and sign in with an OpenAI account.</li>
+                    <li class="list-group-item">Click your profile icon at the top-right corner of the page and select <a href="https://platform.openai.com/account/api-keys">"View API Keys."</a></li>
+                    <li class="list-group-item">Click "Create New Secret Key" to generate a new API key.</li>
+                  </ol>
+                  
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                  data-mdb-target="#basicAccordionCollapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  What is a leading prompt?
+                </button>
+              </h2>
+              <div id="basicAccordionCollapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                data-mdb-parent="#basicAccordion" style="">
+                <div class="accordion-body">
+                  <strong></strong> Users can define a specific text or phrase that can serve as a starting point or context for their queries. When the extension is interacted with by the user, the ability to input a custom leading prompt is provided. Once set, the queries made by the user will be automatically appended with this prompt whenever a new request is made or a query is initiated within the extension.
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+
+    <!-- JS -->
+    <script type="text/javascript" src="./assets/js/mdb.min.js"></script>
+    <script type="text/javascript" src="./assets/js/local-storage.js"></script>
+    
+</body>
+
+</html>
