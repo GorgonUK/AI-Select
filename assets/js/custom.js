@@ -29,9 +29,9 @@ async function fetchLanguages() {
   
     // create an option element for each language and append it to the select
     for (const language of sortedLanguages) {
-      const { code, name } = language;
+      const { name } = language;
       const option = document.createElement('option');
-      option.value = code;
+      option.value = name;
       option.textContent = name;
       select.append(option);
     }

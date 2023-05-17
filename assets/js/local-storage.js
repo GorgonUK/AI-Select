@@ -4,7 +4,7 @@ function saveSettings() {
     var apiKeyInput = document.getElementById("apiKeyInput");
     var leadingPromptInput = document.getElementById("leadingPromptInput");
 
-    var languageValue = languageSelect.value;
+    var languageValue = languageSelect.options[languageSelect.selectedIndex].text;
     var apiKeyValue = apiKeyInput.value;
     var leadingPromptValue = leadingPromptInput.value;
 

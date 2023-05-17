@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Ask AI",
+  "name": "Ask ChatGPT",
   "version": "1.4",
-  "description": "A chrome extension to utilize ChatGPT on text selection",
+  "description": "Utilize ChatGPT on text selections across the web.",
   "permissions": [
+    "tabs",
     "activeTab",
-    "storage",
-    "https://api.openai.com/*"
+    "storage"
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
@@ -14,7 +14,7 @@
   "icons": {
     "48": "assets/logo/AskAi-48.png",
     "128": "assets/logo/AskAi-128.png",
-    "512": "assets/logo/AskAi.png"
+    "512": "assets/logo/AskAi-512.png"
   },
   "background": {
     "service_worker": "background.js"
@@ -22,11 +22,12 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["index.js"]
+      "js": ["index.js","assets/js/mdb.min.js"],
+      "css": ["assets/css/fa.min.css","assets/css/core.min.css","assets/css/mdb.min.css"]
     }
   ],
   "action": {
-    "default_icon": "assets/logo/AskAi-48.png",
+    "default_icon": "assets/logo/AskAi-512.png",
     "default_popup": "index.html"
   }
 }
