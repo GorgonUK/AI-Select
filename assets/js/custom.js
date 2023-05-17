@@ -1,42 +1,39 @@
-// create an async function to fetch data from the API
 async function fetchLanguages() {
-    const response = await fetch('https://restcountries.com/v3.1/all');
-    const countries = await response.json();
-  
-    // create a Set to store unique languages
-    const languages = new Set();
-  
-    // loop over each country
-    for (const country of countries) {
-      // loop over the languages of each country
-      for (const langCode in country.languages) {
-        const langName = country.languages[langCode];
-        // add the language to the Set
-        languages.add(JSON.stringify({ code: langCode, name: langName }));
-      }
-    }
-  
-    // convert Set to an array and sort it by language name
-    const sortedLanguages = Array.from(languages)
-      .map(language => JSON.parse(language))
-      .sort((a, b) => a.name.localeCompare(b.name));
-  
-    // get the select element
-    const select = document.getElementById('language-select');
-  
-    // clear the select element
-    select.innerHTML = '';
-  
-    // create an option element for each language and append it to the select
-    for (const language of sortedLanguages) {
-      const { name } = language;
-      const option = document.createElement('option');
-      option.value = name;
-      option.textContent = name;
-      select.append(option);
-    }
+  // list of languages
+  const languageList = [
+    'Afrikaans', 'Albanian', 'Amharic', 'Arabic', 'Armenian', 'Azerbaijani', 'Basque', 
+    'Belarusian', 'Bengali', 'Bosnian', 'Bulgarian', 'Burmese', 'Catalan', 'Cebuano', 
+    'Chichewa', 'Chinese (Cantonese)', 'Chinese (Mandarin)', 'Corsican', 'Croatian', 
+    'Czech', 'Danish', 'Dutch', 'English', 'Esperanto', 'Estonian', 'Farsi', 'Filipino', 
+    'Finnish', 'French', 'Frisian', 'Galician', 'Georgian', 'German', 'Greek', 'Gujarati', 
+    'Haitian Creole', 'Hausa', 'Hawaiian', 'Hebrew', 'Hindi', 'Hmong', 'Hungarian', 
+    'Icelandic', 'Igbo', 'Indonesian', 'Irish', 'Italian', 'Japanese', 'Javanese', 
+    'Kannada', 'Kazakh', 'Khmer', 'Kinyarwanda', 'Korean', 'Kurdish (Kurmanji)', 'Kyrgyz', 
+    'Lao', 'Latin', 'Latvian', 'Lithuanian', 'Luxembourgish', 'Macedonian', 'Malagasy', 
+    'Malay', 'Malayalam', 'Maltese', 'Maori', 'Marathi', 'Mongolian', 'Nepali', 'Norwegian', 
+    'Odia (Oriya)', 'Pashto', 'Persian', 'Polish', 'Portuguese', 'Punjabi', 'Romanian', 
+    'Russian', 'Samoan', 'Scots Gaelic', 'Serbian', 'Sesotho', 'Shona', 'Sindhi', 'Sinhala', 
+    'Slovak', 'Slovenian', 'Somali', 'Spanish', 'Sundanese', 'Swahili', 'Swedish', 'Tajik', 
+    'Tamil', 'Tatar', 'Telugu', 'Thai', 'Turkish', 'Turkmen', 'Ukrainian', 'Urdu', 'Uyghur', 
+    'Uzbek', 'Vietnamese', 'Welsh', 'Xhosa', 'Yiddish', 'Yoruba', 'Zulu'
+  ];
+
+  // get the select element
+  const select = document.getElementById('language-select');
+
+  // clear the select element
+  select.innerHTML = '';
+
+  // create an option element for each language and append it to the select
+  for (const language of languageList) {
+    const option = document.createElement('option');
+    option.value = language;
+    option.textContent = language;
+    select.append(option);
   }
-  
-  // call the function
+}
+
+// call the function
+document.addEventListener('DOMContentLoaded', (event) => {
   fetchLanguages();
-  
+});

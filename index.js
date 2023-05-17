@@ -17,7 +17,9 @@ function clearHistory() {
   }
 }
 
-window.addEventListener("load", clearHistory);
+window.addEventListener("load", function () {
+  clearHistory();
+});
 
 function getSelectionEndCoordinates() {
   var sel = window.getSelection();
@@ -192,10 +194,10 @@ async function handleaskChatGPTClick(x, y) {
         });
       });
     }
-    modalTitle.textContent = 'Based on "'+result.leadingPrompt+'" leading prompt';
+    modalTitle.textContent = 'Based on "' + result.leadingPrompt + '" leading prompt';
     function getTabId() {
       return new Promise((resolve, reject) => {
-        chrome.runtime.sendMessage({message: "getTabId"}, function(response) {
+        chrome.runtime.sendMessage({ message: "getTabId" }, function (response) {
           if (chrome.runtime.lastError) {
             reject(chrome.runtime.lastError);
           } else {
@@ -208,25 +210,25 @@ async function handleaskChatGPTClick(x, y) {
     async function main() {
       try {
         const result = await getChromeStorageSync(['apiKey', 'selectedLanguage', 'leadingPrompt']);
-    
+
         // Get the current tab ID
         const tabId = await getTabId();
         console.log(tabId);  // Use tabId here
-    
+
         // Get the history for this tab
         let history = JSON.parse(localStorage.getItem(`history_${tabId}`)) || [];
-    
+
         // Construct the system message and selected text
-        const systemMessage = `Language: ${result.selectedLanguage}. ${result.leadingPrompt}`+'. Make sure carefully consider previous messages when responding'; 
-    
+        const systemMessage = `You Must only respond in the following language: ${result.selectedLanguage}. ${result.leadingPrompt}` + '. Make sure carefully consider previous messages when responding';
+
         // Push the system message to history only once
         if (history.length === 0) {
           history.push({ role: 'system', content: systemMessage });
         }
-    
+
         // Push the user message to history
         history.push({ role: 'user', content: selectedText });
-    
+
         // Make API call to OpenAI's chat completion endpoint
         try {
           const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -240,20 +242,20 @@ async function handleaskChatGPTClick(x, y) {
               messages: history,
             }),
           });
-    
+
           const data = await response.json();
-    
+
           // Handle the API response
           if (response.ok) {
             // Use the message content from the first choice
             const messageContent = data.choices[0].message.content;
-    
+
             // Push the response to history
             history.push({ role: 'assistant', content: messageContent });
-    
+
             // Save the history to localStorage
             localStorage.setItem(`history_${tabId}`, JSON.stringify(history));
-    
+
             // Display the response in the overlay
             body.textContent = messageContent;
           } else {
@@ -262,7 +264,7 @@ async function handleaskChatGPTClick(x, y) {
             body.textContent = 'Error: API Key Missing. Please make sure you include a valid API key set in the settings'
             chrome.runtime.sendMessage({ message: 'MissingAPIKey' });
           }
-    
+
         } catch (error) {
           console.error(error);
         } finally {
@@ -276,11 +278,11 @@ async function handleaskChatGPTClick(x, y) {
         console.error(error);
       }
     }
-    
+
     main();
-    
+
   });
-  
+
 
   body.className = 'card-text'; // Added MDB classes
   body.style.color = 'rgb(44 34 34)';

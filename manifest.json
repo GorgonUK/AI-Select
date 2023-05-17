@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Ask ChatGPT",
-  "version": "1.4",
+  "version": "1.5",
   "description": "Utilize ChatGPT on text selections across the web.",
   "permissions": [
     "tabs",
@@ -21,9 +21,20 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["index.js","assets/js/mdb.min.js"],
-      "css": ["assets/css/fa.min.css","assets/css/core.min.css","assets/css/mdb.min.css"]
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "assets/js/jquery.min.js",
+        "index.js",
+        "assets/js/mdb.min.js"
+      ],
+      "css": [
+        "assets/css/fa.min.css",
+        "assets/css/core.min.css",
+        "assets/css/mdb.min.css"
+      ]
     }
   ],
   "action": {
