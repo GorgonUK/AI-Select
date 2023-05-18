@@ -246,7 +246,7 @@ async function handleaskChatGPTClick(x, y) {
         let history = JSON.parse(localStorage.getItem(`history_${tabId}`)) || [];
 
         // Construct the system message and selected text
-        const systemMessage = `You Must only respond in the following language: ${result.selectedLanguage}. ${result.leadingPrompt}` + '. Make sure carefully consider previous messages when responding';
+        const systemMessage = `You Must only respond in the following language: ${result.selectedLanguage}. ${result.leadingPrompt}`;
 
         // Push the system message to history only once
         if (history.length === 0) {
