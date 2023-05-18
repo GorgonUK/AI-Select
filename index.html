@@ -5,103 +5,178 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <!-- CSS -->
   <link href="./assets/css/core.min.css" rel="stylesheet" />
   <link href="./assets/css/mdb.min.css" rel="stylesheet" />
-  <link href="./assets/css/fa.min.css" rel="stylesheet" />
-  <link href="./assets/css/custom.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+/>
 
   <!-- JS -->
   <script type="text/javascript" src="./assets/js/custom.js"></script>
   <title>Select text with ChatGPT</title>
   <style>
-    .container {
+    .acgpt-container {
       min-width: 350px;
       max-width: 350px;
-      min-height: 700px;
-      padding: 20px
+      min-height: 630px;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: 20px;
     }
   </style>
 </head>
 
 <body>
-
-  <div class="container">
-
-
+  <div class="acgpt-container">
     <div class="row">
       <div class="col-md-6">
-        <h4 class="mt-3">Settings</h4>
-        <div class="form-floating mt-4">
-          <select class="form-select" id="language-select">
-          </select>
-          <label for="language-select">Response language</label>
+        <div class="text-center animate__animated animate__fadeInDown animate__faster">
+          <img src="./assets/logo/AskChatGPT-128.png" class="img-fluid z-depth-1 rounded" alt="1">
         </div>
-        <div class="form-outline mt-3">
-          <input type="text" id="apiKeyInput" class="form-control form-control-lg" />
-          <label class="form-label" for="formControlLg">API key</label>
+        <div class="mt-3">
+          <div class="card">
+            <div class="card-body animate__animated animate__fadeInUp animate__delay-0.3s animate__faster">
+              <div class="form-check form-switch d-flex flex-column align-items-center p-0">
+                Ask ChatGPT
+                <input class="form-check-input m-2" type="checkbox" role="switch" id="acgpt-switch" />
+                <small class="form-text text-center text-muted">Please note that a reload F5 (Windows/Linux) or ⌘+R (MacOS) is required for the changes to
+                  take effect</small>
+                <label class="form-check-label" for="acgpt-switch" data-toggle="tooltip"
+                  title="Note: Turning this on or off may require a page refresh.">
+                </label>
+
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="form-outline mt-3">
-          <input type="text" id="leadingPromptInput" class="form-control form-control-lg" />
-          <label class="form-label" for="formControlLg">Leading propmpt</label>
+        <div class="card mt-3">
+          <div class="card-body animate__animated animate__fadeInUp animate__delay-0.6s animate__faster">
+            <h4 class="">Settings</h4>
+            <div class="form-outline mt-3" data-toggle="tooltip"
+              title="A custom API Key that you can request from OpenAI's Platform. Check the FAQ for more information.">
+              <input type="text" id="apiKeyInput" class="form-control form-control-lg" />
+              <label class="form-label" for="formControlLg">API key <span class="text-danger">(required)</span></label>
+            </div>
+            <div class="form-floating mt-3" data-toggle="tooltip"
+              title="Choose which langauge you'd like to ChatGPT to respond in.">
+              <select class="form-select" id="language-select">
+              </select>
+              <label for="language-select">Response language <span class="grey-text">(optional)</span></label>
+            </div>
+            <div class="form-outline mt-3" data-toggle="tooltip"
+              title="An additional system message to the bot that changes the way the bot responds to your selected text e.g. Categorise text.">
+              <input type="text" id="leadingPromptInput" class="form-control form-control-lg" />
+              <label class="form-label" for="formControlLg">Custom message <span
+                  class="grey-text">(optional)</span></label>
+            </div>
+            <div class="row mt-4 mb-2">
+              <div class="col-md-6">
+                <button class="btn btn-primary" id="saveSettingsButton" data-mdb-ripple-color="dark"
+                  data-mdb-toggle="modal" data-mdb-target="#acgpt-modal-save-settings">
+                  Save Settings
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
-      </div>
-    </div>
+        <div class="card mt-3">
+          <div class="card-body animate__animated animate__fadeInUp animate__delay-0.9s animate__faster">
+            <h4 class="">FAQ</h4>
+            <div class="accordion w-100 mt-3" id="basicAccordion">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                  <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                    data-mdb-target="#basicAccordionCollapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    Where do I find my API key?
+                  </button>
+                </h2>
+                <div id="basicAccordionCollapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                  data-mdb-parent="#basicAccordion" style="">
+                  <div class="accordion-body">
+                    <ol class="list-group list-group-light list-group-numbered">
+                      <li class="list-group-item">Go to OpenAI's Platform website at <a
+                          href="https://platform.openai.com">platform.openai.com</a> and sign in with an OpenAI account.
+                      </li>
+                      <li class="list-group-item">Click your profile icon at the top-right corner of the page and select
+                        <a href="https://platform.openai.com/account/api-keys"><strong>"View API Keys".</strong></a>
+                      </li>
+                      <li class="list-group-item">Click "Create New Secret Key" to generate a new API key.</li>
+                    </ol>
 
-    <div class="row mt-4">
-      <div class="col-md-6">
-        <button class="btn" id="saveSettingsButton">
-          Save Settings
-        </button>
-      </div>
-    </div>
-    <h4 class="mt-5">FAQ</h4>
-    <div class="accordion w-100 mt-4" id="basicAccordion">
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-          <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse"
-            data-mdb-target="#basicAccordionCollapseOne" aria-expanded="false" aria-controls="collapseOne">
-            Where do I find my API Key?
-          </button>
-        </h2>
-        <div id="basicAccordionCollapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
-          data-mdb-parent="#basicAccordion" style="">
-          <div class="accordion-body">
-            <ol class="list-group list-group-light list-group-numbered">
-              <li class="list-group-item">Go to OpenAI's Platform website at <a
-                  href="https://platform.openai.com">platform.openai.com</a> and sign in with an OpenAI account.</li>
-              <li class="list-group-item">Click your profile icon at the top-right corner of the page and select <a
-                  href="https://platform.openai.com/account/api-keys"><strong>"View API Keys".</strong></a></li>
-              <li class="list-group-item">Click "Create New Secret Key" to generate a new API key.</li>
-            </ol>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                    data-mdb-target="#basicAccordionCollapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    What is response language?
+                  </button>
+                </h2>
+                <div id="basicAccordionCollapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                  data-mdb-parent="#basicAccordion">
+                  <div class="accordion-body">
+                    Response language allows you to choose which language you'd like ChatGPT to respond in.
+                    By default it is set to English, but you can choose from a variety of languages.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                  <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse"
+                    data-mdb-target="#basicAccordionCollapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    What is a custom message?
+                  </button>
+                </h2>
+                <div id="basicAccordionCollapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                  data-mdb-parent="#basicAccordion">
+                  <div class="accordion-body">
+                    You can define a specific text or phrase that serves as a starting point or
+                    context
+                    for your selected text queries.
 
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingTwo">
-          <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse"
-            data-mdb-target="#basicAccordionCollapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-            What is a leading prompt?
-          </button>
-        </h2>
-        <div id="basicAccordionCollapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-          data-mdb-parent="#basicAccordion" style="">
-          <div class="accordion-body">
-            <strong>Users can define a specific text or phrase</strong> that can serve as a starting point or context
-            for their queries.
-            Please note that a reload is required for the changes to take effect.
+
+
+      <!-- Modal -->
+      <div class="modal top fade animate__animated animate__fadeIn" id="acgpt-modal-save-settings" tabindex="-1"
+        aria-labelledby="acgpt-modal-save-settingsLabel" aria-hidden="true" data-mdb-backdrop="true"
+        data-mdb-keyboard="true">
+        <div class="modal-dialog modal-sm ">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="acgpt-modal-save-settingsLabel"> <i class="fas fa-check"></i> Saved</h5>
+              <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"> Your settings have been successfully saved.</div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-mdb-ripple-color="dark" data-mdb-dismiss="modal">
+                OK
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+      <!-- Modal End -->
 
-  <!-- JS -->
-  <script type="text/javascript" src="./assets/js/mdb.min.js"></script>
-  <script type="text/javascript" src="./assets/js/local-storage.js"></script>
+      <div class="text-center p-4 mt-4" style="background-color: rgba(0, 0, 0, 0.05);">
+        Copyright © <span id="current-year"></span> George Kontus
+      </div>
+      <!-- JS -->
+      <script type="text/javascript" src="./assets/js/mdb.min.js"></script>
+      <script type="text/javascript" src="./assets/js/local-storage.js"></script>
+      <script type="text/javascript" src="./assets/js/tooltip.js"></script>
+
 </body>
 
 </html>

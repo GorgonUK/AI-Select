@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Ask ChatGPT",
   "version": "1.5",
-  "description": "Utilize ChatGPT on text selections across the web.",
+  "description": "Enhance browsing with Ask ChatGPT: Multilingual convos, contextual queries, effortless history.",
   "permissions": [
     "tabs",
     "activeTab",
@@ -31,6 +31,7 @@
         "assets/js/mdb.min.js"
       ],
       "css": [
+        "assets/css/custom.css",
         "assets/css/fa.min.css",
         "assets/css/core.min.css",
         "assets/css/mdb.min.css"

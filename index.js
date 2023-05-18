@@ -3,6 +3,31 @@ let askChatGPT;
 let overlay;
 let conversations = {};
 
+document.addEventListener("DOMContentLoaded", function () {
+  var toggleSwitch = document.getElementById("acgpt-switch");
+  var toggleButton = document.getElementById("toggleButton");
+
+  toggleButton.addEventListener("click", function () {
+    var enableScript = toggleSwitch.checked;
+    chrome.storage.sync.set({toggleSwitch: enableScript}, function() {
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {toggleScript: true, enable: enableScript});
+      });
+    });
+  });
+});
+
+// Load initial script state from chrome.storage
+chrome.storage.sync.get('toggleSwitch', function (data) {
+  if (data.toggleSwitch) {
+    document.addEventListener('mouseup', handleTextSelection);
+    console.log('Script Enabled');
+  } else {
+    document.removeEventListener('mouseup', handleTextSelection);
+    console.log('Script Disabled');
+  }
+});
+
 //Clear Chat history
 function clearHistory() {
   // Get all keys from the local storage
@@ -78,7 +103,7 @@ function handleTextSelection(event) {
     const coords = getSelectionEndCoordinates();
 
     askChatGPT = document.createElement('a');
-    askChatGPT.className = 'btn text-white';
+    askChatGPT.className = 'acgpt-popup-button btn text-white';
     askChatGPT.role = 'button';
     askChatGPT.style.backgroundColor = '#75A99C';
     askChatGPT.innerHTML = `
@@ -136,6 +161,7 @@ async function handleaskChatGPTClick(x, y) {
   // Create modal title
   const modalTitle = document.createElement('h5');
   modalTitle.className = 'modal-title';
+  
   modalTitle.textContent = ' ';
   modalTitle.style.fontSize = '1em';
 
@@ -147,6 +173,8 @@ async function handleaskChatGPTClick(x, y) {
   closeButton.setAttribute('aria-label', 'Close');
 
   // Append modal title and close button to modal header
+  modalHeader.innerHTML = `
+  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAACfElEQVR4nMWVSUiVURiGnwYUSipyI5VFw0qoNm7MNg2UixaVBE0KLiqoEIQmrEUQRELBJSiKSogiokUggkQDzRBEqyCCJhooKxM0UimuN448F44/v2IS+MLP/c93z3nfbzrfD2OMCcBO4CHQB3QCN4A1/4O8SOIc8AA4DpwH3mk7C8wHFgOFoxG4DvQCWxL2BcBnRfJPiO4qMG+k5Cs9uDeyTQIOA798zgAbTNcR09cBLBqOeCnwVPIeoED7RuAD0A9cAUpTzs4C3gBvh0pZNfDH8APZM+3rFQzClVHxtwOXgfKIY7l7tybJZwBdwD1gKnDXJ6DeQ8UDK1gNPI+izALNQAkwDmgHzpHAIeA3MNt1LNAgWQXQ5vtHI54CNFnkbmAf8NKCD8IdvSdFYI+kWQv53VRmgGlRZ7VEXXU0KRD6/OYQAvs9dNI0TQdOafsK1AHj3VtrNK1JgWZzN9F1m97WAI2S5TsqX+Rg++nvE6DM/3Zrq4oFqjTucl3moVxEEkjzKNDWqBOdOoVOBmcvJKNoNbwQJnZEnWkIZKdNT7Hpypm+ZEoDbidqOoBjUZFaLBwWMmNhO/Q2677QAGkCj4BbJHANeGGrdRtNk61YbWvmTEWF7w0pAnNs+YNJgTApv5iaEguf9TLlvFyr3FusrT4hUGRHdnl5B6HGQ8siWzlwCdgWFbkymlfrtIWx8h54rfdrSUGhg+oVMDPl/1IHXb+zalN0rjdq1yUMgzBqf1jIjON4M3DREd3jyA6jO48Dkq9ghJjrLOlLfFQ+pXxQavU+NMg/I1ymhZKGOxBEwrwP7yeAx9ruA5NHI5BEuO3hMn4zhaFbdkRzaGzwF2tBxsufvhN5AAAAAElFTkSuQmCC" alt="Icon">`;
   modalHeader.appendChild(modalTitle);
   modalHeader.appendChild(closeButton);
 
@@ -194,7 +222,6 @@ async function handleaskChatGPTClick(x, y) {
         });
       });
     }
-    modalTitle.textContent = 'Based on "' + result.leadingPrompt + '" leading prompt';
     function getTabId() {
       return new Promise((resolve, reject) => {
         chrome.runtime.sendMessage({ message: "getTabId" }, function (response) {
@@ -304,5 +331,5 @@ async function handleaskChatGPTClick(x, y) {
   overlay.addEventListener('mouseup', event => event.stopPropagation());
 }
 
-// Listen for text selection
-document.addEventListener('mouseup', handleTextSelection);
+
+

@@ -36,4 +36,9 @@ async function fetchLanguages() {
 // call the function
 document.addEventListener('DOMContentLoaded', (event) => {
   fetchLanguages();
+  
+  // current year
+const currentYear = new Date().getFullYear();
+document.getElementById("current-year").textContent = currentYear;
 });
+

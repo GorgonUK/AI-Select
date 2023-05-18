@@ -1,8 +1,4 @@
-@font-face {
-    font-family: 'Source Serif Pro';
-    src: url('../fonts/SourceSerifPro-Regular.ttf') format('truetype')
-}
-
-body {
-    font-family: 'Source Serif Pro', serif;
-}
+.acgpt-popup-button:hover {
+    color: #ffffff !important;
+  }
+  
