@@ -2,12 +2,12 @@
 function saveSettings() {
     var languageSelect = document.getElementById("language-select");
     var apiKeyInput = document.getElementById("apiKeyInput");
-    var leadingPromptInput = document.getElementById("leadingPromptInput");
-    var toggleSwitch = document.getElementById("acgpt-switch");
+    var customMessageInput = document.getElementById("customMessageInput");
+    var toggleSwitch = document.getElementById("ai-select-switch");
   
     var languageValue = languageSelect.options[languageSelect.selectedIndex].text;
     var apiKeyValue = apiKeyInput.value;
-    var leadingPromptValue = leadingPromptInput.value;
+    var customMessageValue = customMessageInput.value;
     var toggleSwitchValue = toggleSwitch.checked;
   
     // Save the values in the chrome.storage
@@ -15,7 +15,7 @@ function saveSettings() {
       {
         selectedLanguage: languageValue,
         apiKey: apiKeyValue,
-        leadingPrompt: leadingPromptValue,
+        customMessage: customMessageValue,
         toggleSwitch: toggleSwitchValue,
       },
       function () {
@@ -28,15 +28,15 @@ function saveSettings() {
   window.addEventListener("load", function () {
     var languageSelect = document.getElementById("language-select");
     var apiKeyInput = document.getElementById("apiKeyInput");
-    var leadingPromptInput = document.getElementById("leadingPromptInput");
-    var toggleSwitch = document.getElementById("acgpt-switch");
+    var customMessageInput = document.getElementById("customMessageInput");
+    var toggleSwitch = document.getElementById("ai-select-switch");
     var saveSettingsButton = document.getElementById("saveSettingsButton");
   
     // Function to check if all required fields have information
     function checkFields() {
       var languageValue = languageSelect.value;
       var apiKeyValue = apiKeyInput.value;
-      var leadingPromptValue = leadingPromptInput.value;
+      var customMessageValue = customMessageInput.value;
   
       // Enable or disable the save settings button based on field values
       if (apiKeyValue) {
@@ -51,7 +51,7 @@ function saveSettings() {
     // Add input event listeners to check if all required fields have information
     languageSelect.addEventListener("input", checkFields);
     apiKeyInput.addEventListener("input", checkFields);
-    leadingPromptInput.addEventListener("input", checkFields);
+    customMessageInput.addEventListener("input", checkFields);
   
     // Add "change" event listener to the toggle switch
     toggleSwitch.addEventListener("change", function (e) {
@@ -64,18 +64,18 @@ function saveSettings() {
   
     // Get the values from the chrome.storage
     chrome.storage.sync.get(
-      ["selectedLanguage", "apiKey", "leadingPrompt", "toggleSwitch"],
+      ["selectedLanguage", "apiKey", "customMessage", "toggleSwitch"],
       function (items) {
         // Set the values in the form fields
         languageSelect.value = items.selectedLanguage || "";
         apiKeyInput.value = items.apiKey || "";
-        leadingPromptInput.value = items.leadingPrompt || "";
+        customMessageInput.value = items.customMessage || "";
         toggleSwitch.checked = items.toggleSwitch || false;
   
         // Add "active" class to elements
         languageSelect.classList.add("active");
         apiKeyInput.classList.add("active");
-        leadingPromptInput.classList.add("active");
+        customMessageInput.classList.add("active");
   
         // Check fields on page load
         checkFields();

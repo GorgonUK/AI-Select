@@ -13,9 +13,9 @@
 
   <!-- JS -->
   <script type="text/javascript" src="./assets/js/custom.js"></script>
-  <title>Select text with ChatGPT</title>
+  <title>Select text with AI Select</title>
   <style>
-    .acgpt-container {
+    .ai-select-container {
       min-width: 350px;
       max-width: 350px;
       min-height: 630px;
@@ -25,23 +25,22 @@
     }
   </style>
 </head>
-
 <body>
-  <div class="acgpt-container">
+  <div class="ai-select-container">
     <div class="row">
       <div class="col-md-6">
         <div class="text-center animate__animated animate__fadeInDown animate__faster">
-          <img src="./assets/logo/AskChatGPT-128.png" class="img-fluid z-depth-1 rounded" alt="1">
+          <img src="./assets/logo/AISelect-128.png" class="img-fluid z-depth-1 rounded" alt="1">
         </div>
         <div class="mt-3">
           <div class="card">
             <div class="card-body animate__animated animate__fadeInUp animate__delay-0.3s animate__faster">
               <div class="form-check form-switch d-flex flex-column align-items-center p-0">
-                Ask ChatGPT
-                <input class="form-check-input m-2" type="checkbox" role="switch" id="acgpt-switch" />
+                AI Select
+                <input class="form-check-input m-2" type="checkbox" role="switch" id="ai-select-switch" />
                 <small class="form-text text-center text-muted">Please note that a reload F5 (Windows/Linux) or ⌘+R (MacOS) is required for the changes to
                   take effect</small>
-                <label class="form-check-label" for="acgpt-switch" data-toggle="tooltip"
+                <label class="form-check-label" for="ai-select-switch" data-toggle="tooltip"
                   title="Note: Turning this on or off may require a page refresh.">
                 </label>
 
@@ -58,21 +57,21 @@
               <label class="form-label" for="formControlLg">API key <span class="text-danger">(required)</span></label>
             </div>
             <div class="form-floating mt-3" data-toggle="tooltip"
-              title="Choose which langauge you'd like to ChatGPT to respond in.">
+              title="Choose which langauge you'd like to AI Select to respond in.">
               <select class="form-select" id="language-select">
               </select>
               <label for="language-select">Response language <span class="grey-text">(optional)</span></label>
             </div>
             <div class="form-outline mt-3" data-toggle="tooltip"
               title="An additional system message to the bot that changes the way the bot responds to your selected text e.g. Categorise text.">
-              <input type="text" id="leadingPromptInput" class="form-control form-control-lg" />
+              <input type="text" id="customMessageInput" class="form-control form-control-lg" />
               <label class="form-label" for="formControlLg">Custom message <span
                   class="grey-text">(optional)</span></label>
             </div>
             <div class="row mt-4 mb-2">
               <div class="col-md-6">
                 <button class="btn btn-primary" id="saveSettingsButton" data-mdb-ripple-color="dark"
-                  data-mdb-toggle="modal" data-mdb-target="#acgpt-modal-save-settings">
+                  data-mdb-toggle="modal" data-mdb-target="#ai-select-modal-save-settings">
                   Save Settings
                 </button>
               </div>
@@ -117,7 +116,7 @@
                 <div id="basicAccordionCollapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                   data-mdb-parent="#basicAccordion">
                   <div class="accordion-body">
-                    Response language allows you to choose which language you'd like ChatGPT to respond in.
+                    Response language allows you to choose which language you'd like AI Select to respond in.
                     By default it is set to English, but you can choose from a variety of languages.
                   </div>
                 </div>
@@ -134,7 +133,7 @@
                   <div class="accordion-body">
                     You can define a specific text or phrase that serves as a starting point or
                     context
-                    for your selected text queries.
+                    for your selected text queries. The custom message is sent to the bot before your selected text.
 
                   </div>
                 </div>
@@ -146,13 +145,13 @@
 
 
       <!-- Modal -->
-      <div class="modal top fade animate__animated animate__fadeIn" id="acgpt-modal-save-settings" tabindex="-1"
-        aria-labelledby="acgpt-modal-save-settingsLabel" aria-hidden="true" data-mdb-backdrop="true"
+      <div class="modal top fade animate__animated animate__fadeIn" id="ai-select-modal-save-settings" tabindex="-1"
+        aria-labelledby="ai-select-modal-save-settingsLabel" aria-hidden="true" data-mdb-backdrop="true"
         data-mdb-keyboard="true">
         <div class="modal-dialog modal-sm ">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="acgpt-modal-save-settingsLabel"> <i class="fas fa-check"></i> Saved</h5>
+              <h5 class="modal-title" id="ai-select-modal-save-settingsLabel"> <i class="fas fa-check"></i> Saved</h5>
               <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body"> Your settings have been successfully saved.</div>

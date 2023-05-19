@@ -1,20 +1,19 @@
 {
   "manifest_version": 3,
-  "name": "Ask ChatGPT",
+  "name": "AI Select",
   "version": "1.7",
-  "description": "Enhance browsing with Ask ChatGPT: Multilingual convos, contextual queries, effortless history.",
+  "description": "Enhance browsing with Ask AI Select: Multilingual convos, contextual queries, effortless history.",
   "permissions": [
     "tabs",
-    "activeTab",
     "storage"
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
   },
   "icons": {
-    "48": "assets/logo/AskChatGPT-48.png",
-    "128": "assets/logo/AskChatGPT-128.png",
-    "512": "assets/logo/AskChatGPT-512.png"
+    "48": "assets/logo/AISelect-48.png",
+    "128": "assets/logo/AISelect-128.png",
+    "512": "assets/logo/AISelect-512.png"
   },
   "background": {
     "service_worker": "background.js"
@@ -34,7 +33,7 @@
     }
   ],
   "action": {
-    "default_icon": "assets/logo/AskChatGPT-512.png",
+    "default_icon": "assets/logo/AISelect-512.png",
     "default_popup": "index.html"
   }
 }
