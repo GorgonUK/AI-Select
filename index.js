@@ -103,11 +103,11 @@ function handleTextSelection(event) {
     const coords = getSelectionEndCoordinates();
 
     askChatGPT = document.createElement('a');
-    askChatGPT.className = 'acgpt-popup-button btn text-white';
+    askChatGPT.className = 'acgpt-popup-button acgpt-popup-button-text-white';
     askChatGPT.role = 'button';
     askChatGPT.style.backgroundColor = '#75A99C';
     askChatGPT.innerHTML = `
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAACjUlEQVR4nMWVXWjOYRjGN1tb+Vx2ojHCjlbmZCdeTnzUduBAw8EwtRNq5COM2AEpH0VJEbGVSNoBsXqViA2ltKMdTAkh37xl8pG1/XTNVZ49+78aU+56e//P/Tz3dT3355OT8z8FyAMagA7gC/ABuAos/hfgY4Hb/BQRHAJOAU+sOwnMBGYDhX9DcBH4CqyM9GXASwbLN+ACMGO44ItsuC3QjQZ2O1SfgRPAMoUL2AtkgPdAxe+A5wH3DS6gAutrgWdAP3AeKE2wnQI8Ah4nhgxYCvTafYF1Wl9jQhHPDZK/BjgHVAYYC3x2VQxeAnwEbgETgJv6eW+DjYq9rgK6Ai/7gBZgEpALvFYxxARNwHdgqtchwSaDpYC0v5/b4/HAQSe5B2gEHijhMcEN3T5YhwRbDNrnRL5zKI8ARUFlXQ6qal9MoDq/loWg0UZHFSZgInDMujdAvULjs6vtTVtM0Ay8AvK9Tvu2dcBOgw1UVJBkySf/3wPKvbfeuuqQoNrKdV6X2ygEGSD3foF1u3wJXSbtvXwnujn24ordq/N6lN1XGCTHHZ5ih0uyPQ6p19eB9phgP7/kkuaM9UVOaK87NeOES7ZmIbgjkpigFeh2UnvszQFgnJtNpYnzM8ffmxOKYppLvikmOO1E57ppWnxTNRNuriqfVagkG0MCT+AON21JTKBkSeYHukrgrMdCnnWpYF7VWNcJPPUs0u2XDAL3oUIPqofA5IT9Ug+6fs+q2sBOYx1XXmoIeABS4Vcr48QuB1YAZzyiFa49Gt2BzQ6DL8wKHJFM9+OhJIfyIn5Q3Lm6feuwwCNjNdMsgboHJIqxvg8Dd61rB8b8MUECobq9DXjrEKpa1qohRww+EvkBv1+bKH737dgAAAAASUVORK5CYII=" alt="Icon">
+    <img class="acgpt-popup-button-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAACjUlEQVR4nMWVXWjOYRjGN1tb+Vx2ojHCjlbmZCdeTnzUduBAw8EwtRNq5COM2AEpH0VJEbGVSNoBsXqViA2ltKMdTAkh37xl8pG1/XTNVZ49+78aU+56e//P/Tz3dT3355OT8z8FyAMagA7gC/ABuAos/hfgY4Hb/BQRHAJOAU+sOwnMBGYDhX9DcBH4CqyM9GXASwbLN+ACMGO44ItsuC3QjQZ2O1SfgRPAMoUL2AtkgPdAxe+A5wH3DS6gAutrgWdAP3AeKE2wnQI8Ah4nhgxYCvTafYF1Wl9jQhHPDZK/BjgHVAYYC3x2VQxeAnwEbgETgJv6eW+DjYq9rgK6Ai/7gBZgEpALvFYxxARNwHdgqtchwSaDpYC0v5/b4/HAQSe5B2gEHijhMcEN3T5YhwRbDNrnRL5zKI8ARUFlXQ6qal9MoDq/loWg0UZHFSZgInDMujdAvULjs6vtTVtM0Ay8AvK9Tvu2dcBOgw1UVJBkySf/3wPKvbfeuuqQoNrKdV6X2ygEGSD3foF1u3wJXSbtvXwnujn24ordq/N6lN1XGCTHHZ5ih0uyPQ6p19eB9phgP7/kkuaM9UVOaK87NeOES7ZmIbgjkpigFeh2UnvszQFgnJtNpYnzM8ffmxOKYppLvikmOO1E57ppWnxTNRNuriqfVagkG0MCT+AON21JTKBkSeYHukrgrMdCnnWpYF7VWNcJPPUs0u2XDAL3oUIPqofA5IT9Ug+6fs+q2sBOYx1XXmoIeABS4Vcr48QuB1YAZzyiFa49Gt2BzQ6DL8wKHJFM9+OhJIfyIn5Q3Lm6feuwwCNjNdMsgboHJIqxvg8Dd61rB8b8MUECobq9DXjrEKpa1qohRww+EvkBv1+bKH737dgAAAAASUVORK5CYII=" alt="Icon">
   Ask ChatGPT
 `;
     askChatGPT.style.position = 'absolute';
@@ -117,6 +117,8 @@ function handleTextSelection(event) {
     askChatGPT.style.textTransform = 'math-auto';
     askChatGPT.style.textDecoration = 'none';
     askChatGPT.style.fontWeight = 'bold';
+    askChatGPT.style.fontSize = '16px';
+    askChatGPT.style.fontFamily = 'roboto';
 
     document.body.appendChild(askChatGPT);
     // Stop propagation of 'mouseup' event on button
@@ -140,8 +142,8 @@ async function handleaskChatGPTClick(x, y) {
   overlay.className = 'overlay card'; // Added MDB classes
   overlay.style.position = 'absolute';
   overlay.style.top = `${y}px`;
-  overlay.style.left = '20%';
-  overlay.style.width = '60%';
+  overlay.style.left = `${x}px`;
+  overlay.style.width = '600px';
   overlay.style.marginTop = '20px';
   overlay.style.zIndex = '9999';
   overlay.style.overflow = 'auto';
@@ -168,7 +170,7 @@ async function handleaskChatGPTClick(x, y) {
   // Create close button
   const closeButton = document.createElement('button');
   closeButton.type = 'button';
-  closeButton.className = 'btn-close';
+  closeButton.className = 'acgpt-btn-close';
   closeButton.setAttribute('data-mdb-dismiss', 'modal');
   closeButton.setAttribute('aria-label', 'Close');
 
@@ -185,28 +187,34 @@ async function handleaskChatGPTClick(x, y) {
   });
 
   const contentDiv = document.createElement('div');
-  contentDiv.className = 'content card-body'; // Added MDB classes
+  contentDiv.className = 'acgpt-card-body'; // Added MDB classes
   contentDiv.style.padding = '1.25rem'; // Typical padding for "card-body"
   const body = document.createElement('div');
 
   //indicate the bot is loading
   const loading = document.createElement('p');
-  loading.className = 'mt-0';
+  loading.className = 'acgpt-card-text acgpt-mt-0';
   loading.textContent = 'Thinking...';
+  loading.style.color = 'rgb(44, 34, 34)';
+  loading.style.fontSize = '16px';
+  loading.style.float = 'left';
+  loading.style.fontWeight = 'normal';
+  loading.style.fontFamily = 'Roboto';
+  
   contentDiv.appendChild(loading);
 
   // Placeholders
   const placeholderGlow = document.createElement('p');
-  placeholderGlow.className = 'placeholder-glow';
+  placeholderGlow.className = 'acgpt-placeholder-glow';
   const placeholderSpanGlow = document.createElement('span');
-  placeholderSpanGlow.className = 'placeholder col-12';
+  placeholderSpanGlow.className = 'acgpt-placeholder acgpt-col-12';
   placeholderGlow.appendChild(placeholderSpanGlow);
   contentDiv.appendChild(placeholderGlow);
 
   const placeholderWave = document.createElement('p');
   placeholderWave.className = 'placeholder-wave';
   const placeholderSpanWave = document.createElement('span');
-  placeholderSpanWave.className = 'placeholder col-12';
+  placeholderSpanWave.className = 'acgpt-placeholder acgpt-col-12';
   placeholderWave.appendChild(placeholderSpanWave);
   contentDiv.appendChild(placeholderWave);
 
@@ -311,10 +319,13 @@ async function handleaskChatGPTClick(x, y) {
   });
 
 
-  body.className = 'card-text'; // Added MDB classes
+  body.className = 'acgpt-card-text'; // Added MDB classes
   body.style.color = 'rgb(44 34 34)';
   body.style.fontSize = 'inherit';
   body.style.float = 'left';
+  body.style.fontSize = '16px';
+  body.style.fontWeight = 'normal';
+  body.style.fontFamily = 'roboto';
 
   //contentDiv.appendChild(header);
   contentDiv.appendChild(body);

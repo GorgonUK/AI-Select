@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Ask ChatGPT",
-  "version": "1.5",
+  "version": "1.7",
   "description": "Enhance browsing with Ask ChatGPT: Multilingual convos, contextual queries, effortless history.",
   "permissions": [
     "tabs",
@@ -26,15 +26,10 @@
         "https://*/*"
       ],
       "js": [
-        "assets/js/jquery.min.js",
-        "index.js",
-        "assets/js/mdb.min.js"
+        "index.js"
       ],
       "css": [
-        "assets/css/custom.css",
-        "assets/css/fa.min.css",
-        "assets/css/core.min.css",
-        "assets/css/mdb.min.css"
+        "assets/css/custom.css"
       ]
     }
   ],
