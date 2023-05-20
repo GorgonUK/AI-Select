@@ -5,6 +5,7 @@ let loader;
 let userInputDiv;
 let userInputField;
 let submitButton;
+let audio;
 
 document.addEventListener('mouseup', function () {
   lastSelectionCoords = getSelectionEndCoordinates();
@@ -312,34 +313,46 @@ async function handleAISelectClick(x, y, selectedText) {
 
           body.textContent = messageContent;
 
-          //add event listener to follow up question button
-          submitButton.addEventListener("click", async () => {
-            let userFollowUpMessage = userInputField.value;
-            if (userFollowUpMessage.trim() !== '') {
-              // Clear the input field
-              userInputField.value = '';
+  //Get TTS for Estonian
+  if (result.selectedLanguage === "Estonian") {
+    // create an audio element
+    let audio = document.querySelector('#audioElement');
+    if (!audio) {
+      audio = new Audio();
+      audio.id = 'audioElement';
+      audio.controls = true;
+      audio.style.marginTop = '20px';
+      audio.style.width = '100%';
+      contentDiv.appendChild(audio);
+    }
+    audio.controls = true;
+    audio.style.marginTop = '20px';
+    audio.style.width = '100%';
+    contentDiv.appendChild(audio);
+    const ttsResponse = await fetch('https://api.tartunlp.ai/text-to-speech/v2', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'audio/wav'
+      },
+      body: JSON.stringify({
+        "text": messageContent,
+        "speaker": "vesta",
+        "speed": 1
+      }),
+    });
 
-              // Clear body.textContent
-              body.textContent = '';
-
-              // Remove audio element
-              if (audio) {
-                audio.remove();
-              }
-              // Remove userInputField and submitButton
-              userInputField.remove();
-              submitButton.remove();
-              // Show loading
-              loading.style.display = 'block';
-
-              // Call your main function
-              await main(userFollowUpMessage);
-            }
-          });
+    if (ttsResponse.ok) {
+      const blob = await ttsResponse.blob();
+      const url = URL.createObjectURL(blob);
+      audio.src = url;
+    }
+  }
 
           //Insert follow-up div and controls
           userInputDiv.appendChild(userInputField);
           userInputDiv.appendChild(submitButton);
+          contentDiv.appendChild(userInputDiv);
 
           userInputField.addEventListener('keyup', function () {
             if (this.value) {
@@ -356,37 +369,33 @@ async function handleAISelectClick(x, y, selectedText) {
             }
           });
 
-          //Get TTS for Estonian
-          if (result.selectedLanguage === "Estonian") {
-            // create an audio element
-            let audio = new Audio();
-            audio.controls = true;
-            audio.style.marginTop = '20px';
-            audio.style.width = '100%';
-            contentDiv.appendChild(audio);
-            const ttsResponse = await fetch('https://api.tartunlp.ai/text-to-speech/v2', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'audio/wav'
-              },
-              body: JSON.stringify({
-                "text": messageContent,
-                "speaker": "vesta",
-                "speed": 1
-              }),
-            });
+        
 
-            if (ttsResponse.ok) {
-              const blob = await ttsResponse.blob();
-              const url = URL.createObjectURL(blob);
-              audio.src = url;
+          //add event listener to follow up question button
+          submitButton.addEventListener("click", async () => {
+            let userFollowUpMessage = userInputField.value;
+            if (userFollowUpMessage.trim() !== '') {
+              // Clear the input field
+              userInputField.value = '';
+
+              // Clear body.textContent
+              body.textContent = '';
+
+              // Remove audio element
+              let audioElement = document.getElementById('audioElement');
+              if (audioElement) {
+                audioElement.parentNode.removeChild(audioElement);
+              }
+              // Remove userInputField and submitButton
+              userInputField.remove();
+              submitButton.remove();
+              // Show loading
+              loading.style.display = 'block';
+
+              // Call your main function
+              await main(userFollowUpMessage);
             }
-          }
-
-          contentDiv.appendChild(userInputDiv);
-
-
+          });
 
 
 
@@ -420,6 +429,7 @@ async function handleAISelectClick(x, y, selectedText) {
   body.style.fontSize = '18px';
   body.style.fontWeight = 'normal';
   body.style.fontFamily = 'roboto';
+  body.style.marginBottom = '20px';
 
   //contentDiv.appendChild(header);
   contentDiv.appendChild(body);
