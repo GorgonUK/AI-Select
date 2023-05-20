@@ -1,11 +1,29 @@
 let selectedText = '';
-let AISelect;
 let overlay;
 let conversations = {};
 let loader;
 let userInputDiv;
 let userInputField;
 let submitButton;
+
+document.addEventListener('mouseup', function () {
+  lastSelectionCoords = getSelectionEndCoordinates();
+});
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.message === "selectAIContextItemClicked") {
+    // If no selection was made, don't do anything
+    if (!lastSelectionCoords) {
+      return;
+    }
+    // Add a slight delay to mimic the CSS transition effect
+    setTimeout(() => {
+      // Trigger the function using the coordinates of the last selection
+      handleAISelectClick(lastSelectionCoords.x, lastSelectionCoords.y, request.data);
+    }, 50);
+  }
+});
+
 
 document.addEventListener("DOMContentLoaded", function () {
   var toggleSwitch = document.getElementById("ai-select-switch");
@@ -19,17 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   });
-});
-
-// Load initial script state from chrome.storage
-chrome.storage.sync.get('toggleSwitch', function (data) {
-  if (data.toggleSwitch) {
-    document.addEventListener('mouseup', handleTextSelection);
-    console.log('Script Enabled');
-  } else {
-    document.removeEventListener('mouseup', handleTextSelection);
-    console.log('Script Disabled');
-  }
 });
 
 //Clear Chat history
@@ -82,62 +89,12 @@ function getSelectionEndCoordinates() {
   }
 }
 
-
-
-// Function to handle text selection
-function handleTextSelection(event) {
-  const selection = window.getSelection();
-
-  selectedText = selection.toString().trim();
-
-  if (AISelect) {
-    AISelect.remove();
-  }
+// Function to handle Ask GPT button click
+async function handleAISelectClick(x, y, selectedText) {
 
   if (overlay) {
     overlay.remove();
   }
-
-  if (selectedText) {
-
-    const coords = getSelectionEndCoordinates();
-
-    AISelect = document.createElement('a');
-    AISelect.className = 'ai-select-popup-button ai-select-popup-button-text-white';
-    AISelect.role = 'button';
-    AISelect.style.backgroundColor = '#703FD5';
-    AISelect.innerHTML = `<img class="ai-select-popup-button-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAH1UExURQAAAP7+///+//////j1/fv5/vr3/vj0/fr4/vz6/v39//79//v6/v38//z7/vXx/efa+fn2/e/m+/v4/ujb+f38/vn1/fXw/PXy/fn2/v7+//7+//////////////79///+//////////79///+//////7+//39//79//7+//////////////////////////////7+//7+//////////7+//79//////////////////////////38/v79//////////79//////////////7+//////7+//////////39//////7+//7+///////+//38//////////////79//7+///+//7+//7+//38//////////7+//79//////////79//7+///+//z6/v/+//7+//38//////////7+//7+//////////39//7+/////////+3i+v/+//////7+//38/v////////////////////////////7+///////////+//39//////////7+//////////7+//38/v/+//7+//////////7+//////79//7+///////+//z7/vTv/P/+//7+//7+///+//7+//////79//79//7+//7+//v5/v7+//7+//79//////79//79/////ylMfocAAACmdFJOUwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABkBiY10qZfPYLZf+UBIUNrrV2fnw1JUSSMvRWQsTLd+sFhQEEsbXHhnbpWD7dhoBEcMcW/pyD8D10hpYn41vDr3uOCfjzxhVoQSMagy57z4t5MwWUvehAYv9Zwu3iU1QTnvJTvb8YgmyxUrh618Jr1cdH0fqES7tsAcBmj0VQjHKIBtRMAEqUyK7BikCY7xaAAAAAWJLR0QDEQxM8gAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+cFExYZG0QXSa0AAAHkSURBVEjH7ZTnU9RQFMX35ZBldx9Ze6+IK2Wx94qKRhEr9oa99y4qrL2Avffu+Tu9G0LZcZKXjw7D+fQyub85ufflnlisVz1MSlnwpYpsc31cDR8xcpSn0WNQbAYSGFtKX+PKVFBZMpHSqVQ7ML6jnpkJCKgvsVFeASctxz6orMpWTyQnZSdPmRrkAEybPmMm4nIsBmbNnjOXnDd/wUIVANh6UQ25eIlO5t36aiytJZcBKY0gg+WufPIK9POfV+aBuqAGxGBVfb7H7GpVEgkA1qz1prIO/aMAA5z1G8gGmf7GTV4XJgDYLFPcslXmvg0DzUBCb99B7ty1u5Hcs9ezCAeAfWKw/wAOisUhwAQk9eEj5NFjljp+gjx5StsGADh9hjx7Tv7m8+SFi3mLMCDtXLpMuleuNjVduy7kjQqtQwGF5ha5AdfN5XJuhszdFIsQIK5v3WaB7pTrdAhg4W6DzPSer/vi9UC6CQach4/I0ta2x57anjwl65/pEEA9f0G+fNWx9q/fkC1vVRjwrirT+B7+q0HWh+rMx09hAPD5y9dvenD705A0vv/4ia4FUv8wCShYunMRHVtJuXlFu2soKn+ZQ6DAM0rMFACRgqz73f/ujMo/KDIDMaW7wnhYhDDu1f+tvyyowXK0jKBxAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIzLTA1LTE5VDIyOjI1OjE0KzAwOjAwViGkewAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMy0wNS0xOVQyMjoyNToxNCswMDowMCd8HMcAAAAodEVYdGRhdGU6dGltZXN0YW1wADIwMjMtMDUtMTlUMjI6MjU6MjcrMDA6MDDPDiBmAAAAAElFTkSuQmCC" alt="Icon">`;
-    AISelect.style.position = 'absolute';
-    AISelect.style.top = `${coords.y + 5}px`;
-    AISelect.style.left = `${coords.x}px`;
-    AISelect.style.zIndex = '9999';
-    AISelect.style.textTransform = 'math-auto';
-    AISelect.style.textDecoration = 'none';
-    AISelect.style.fontWeight = 'bold';
-    AISelect.style.fontSize = '18px';
-    AISelect.style.fontFamily = 'roboto';
-    AISelect.style.paddingTop = '0';
-    AISelect.style.paddingBottom = '0px';
-    AISelect.style.paddingRight = '8px';
-    AISelect.style.paddingLeft = '8px';
-
-    document.body.appendChild(AISelect);
-    // Stop propagation of 'mouseup' event on button
-    AISelect.addEventListener('mouseup', event => event.stopPropagation());
-
-    // Add a slight delay to ensure the CSS transition plays
-    setTimeout(() => {
-      AISelect.classList.add('show');
-    }, 50);
-
-    // Pass the coordinates of the button to the click handler
-    AISelect.addEventListener('click', () => handleAISelectClick(event.pageX + 20, event.pageY + 20,selectedText));
-  }
-}
-
-// Function to handle Ask GPT button click
-async function handleAISelectClick(x, y, selectedText) {
-  AISelect.remove();
 
   overlay = document.createElement('div');
   overlay.className = 'overlay card'; // Added MDB classes
@@ -192,7 +149,6 @@ async function handleAISelectClick(x, y, selectedText) {
   //close everything once clicked
   closeButton.addEventListener('click', () => {
     overlay.remove();
-    AISelect.remove();
   });
 
   const contentDiv = document.createElement('div');
@@ -400,16 +356,17 @@ async function handleAISelectClick(x, y, selectedText) {
             });
 
 
-            // create an audio element
+            
+            contentDiv.appendChild(userInputDiv);
+
+            //Get TTS for Estonian
+            if (result.selectedLanguage === "Estonian") {
+              // create an audio element
             let audio = new Audio();
             audio.controls = true;
             audio.style.marginTop = '20px';
             audio.style.width = '100%';
             contentDiv.appendChild(audio);
-            contentDiv.appendChild(userInputDiv);
-
-            //Get TTS for Estonian
-            if (result.selectedLanguage === "Estonian") {
               const ttsResponse = await fetch('https://api.tartunlp.ai/text-to-speech/v2', {
                 method: 'POST',
                 headers: {

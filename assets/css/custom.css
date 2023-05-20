@@ -81,42 +81,6 @@
     text-decoration: underline;
  }
 
-.ai-select-popup-button:hover {
-    color: #ffffff !important;
-    transition: color 0.15s ease-in-out 0s, background-color 0.15s ease-in-out 0s, border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-
-}
-
-.ai-select-popup-button {
-    display: inline-block;
-    font-family: "Roboto", sans-serif;
-    line-height: 1.5;
-    text-align: center;
-    position: relative;
-    z-index: 2;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    user-select: none;
-    background-color: transparent;
-    padding: 0.375rem 1.5rem;
-    border: 2px solid transparent;
-    border-radius: 0.25rem;
-    letter-spacing: 0.65px;
-    box-shadow: 0 4px 9px -4px rgba(0, 0, 0, 0.35);
-    height: 52px !important;
-    padding: 12px 18px 12px 18px;
-}
-
-.ai-select-popup-button {
-    box-shadow: 0 8px 9px -4px rgba(0, 0, 0, 0.15), 0 4px 18px 0 rgba(0, 0, 0, 0.1);
-}
-
-.ai-select-popup-button-image {
-    padding-bottom: 5px;
-    vertical-align: middle;
-    border-style: none;
-}
 
 .ai-select-popup-card {
 
@@ -159,11 +123,6 @@
     margin-top: 0 !important;
 }
 
-.ai-select-popup-button-text-white {
-    opacity: 1;
-    color: rgba(255, 255, 255) !important;
-}
-
 .ai-select-placeholder-glow .ai-select-placeholder {
     animation: placeholder-glow 2s ease-in-out infinite
 }
@@ -201,6 +160,7 @@
 .ai-select-btn-close {
     padding: calc(1rem*0.5) calc(1rem*0.5);
     margin: calc(1rem*-0.5) calc(1rem*-0.5) calc(1rem*-0.5) auto;
+    margin-right: 4px;
     -webkit-appearance: button;
     box-sizing: content-box;
     width: 1em;
