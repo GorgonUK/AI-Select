@@ -118,10 +118,9 @@ function handleTextSelection(event) {
     AISelect.style.fontSize = '18px';
     AISelect.style.fontFamily = 'roboto';
     AISelect.style.paddingTop = '0';
-    AISelect.style.paddingBottom = '19px';
+    AISelect.style.paddingBottom = '0px';
     AISelect.style.paddingRight = '8px';
     AISelect.style.paddingLeft = '8px';
-    AISelect.style.height = '52px';
 
     document.body.appendChild(AISelect);
     // Stop propagation of 'mouseup' event on button
@@ -145,7 +144,10 @@ async function handleAISelectClick(x, y) {
   overlay.className = 'overlay card'; // Added MDB classes
   overlay.style.position = 'absolute';
   overlay.style.top = `${y}px`;
-  overlay.style.left = `${x}px`;
+  overlay.style.left = '0';
+  overlay.style.right = '0';
+  overlay.style.marginLeft = 'auto';
+  overlay.style.marginRight = 'auto';
   overlay.style.width = '600px';
   overlay.style.marginTop = '20px';
   overlay.style.zIndex = '9999';
@@ -162,14 +164,15 @@ async function handleAISelectClick(x, y) {
 
   // Create modal header
   const modalHeader = document.createElement('div');
-  modalHeader.className = 'modal-header';
+  modalHeader.className = 'ai-select-modal-header';
   modalHeader.style.display = 'flex';
   modalHeader.style.justifyContent = 'space-between';
   modalHeader.style.alignItems = 'center';
+  modalHeader.style.height = '37px';
 
   // Create modal title
   const modalTitle = document.createElement('h5');
-  modalTitle.className = 'modal-title';
+  modalTitle.className = 'ai-select-modal-title';
 
   modalTitle.textContent = ' ';
   modalTitle.style.fontSize = '1em';
