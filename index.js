@@ -50,39 +50,35 @@ window.addEventListener("load", function () {
 function getSelectionEndCoordinates() {
   var sel = window.getSelection();
   if (sel.rangeCount > 0) {
-    var range = sel.getRangeAt(0).cloneRange(); // clone the range to avoid side effects
+      var range = sel.getRangeAt(0).cloneRange(); // clone the range to avoid side effects
 
-    var startNode = range.startContainer;
-    var startOffset = range.startOffset;
-    var endNode = range.endContainer;
-    var endOffset = range.endOffset;
+      var endNode, endOffset;
+      if (sel.isCollapsed) {
+          endNode = sel.anchorNode;
+          endOffset = sel.anchorOffset;
+      } else if (sel.anchorNode.compareDocumentPosition(sel.focusNode) === Node.DOCUMENT_POSITION_FOLLOWING ||
+          (sel.anchorNode === sel.focusNode && sel.anchorOffset > sel.focusOffset)) {
+          endNode = sel.anchorNode;
+          endOffset = sel.anchorOffset;
+      } else {
+          endNode = sel.focusNode;
+          endOffset = sel.focusOffset;
+      }
 
-    if (
-      (startNode.compareDocumentPosition(endNode) === Node.DOCUMENT_POSITION_FOLLOWING && startOffset > endOffset) ||
-      (startNode === endNode && startOffset > endOffset)
-    ) {
-      var tempNode = startNode;
-      var tempOffset = startOffset;
-      startNode = endNode;
-      startOffset = endOffset;
-      endNode = tempNode;
-      endOffset = tempOffset;
-    }
+      range.setEnd(endNode, endOffset); // set the end point of the range
+      var rect = range.getBoundingClientRect(); // get the bounding rectangle of the range
 
-    range.setEnd(endNode, endOffset); // set the end point of the range
-    var rect = range.getBoundingClientRect(); // get the bounding rectangle of the range
+      var x = rect.left;
+      var y = rect.bottom;
 
-    var x = rect.left + rect.width;
-    var y = rect.top + rect.height;
+      // add scroll positions to the x and y coordinates
+      x += window.scrollX;
+      y += window.scrollY;
 
-    // add scroll positions to the x and y coordinates
-    x += window.scrollX;
-    y += window.scrollY;
-
-
-    return { x, y };
+      return { x, y };
   }
 }
+
 
 
 // Function to handle text selection
