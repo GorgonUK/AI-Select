@@ -321,7 +321,6 @@ async function handleAISelectClick(x, y) {
                 const blob = await ttsResponse.blob();
                 const url = URL.createObjectURL(blob);
                 audio.src = url;
-                audio.play();
               }
             }
     
