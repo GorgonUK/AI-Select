@@ -257,26 +257,22 @@ async function handleAISelectClick(x, y) {
     async function main() {
       try {
         const result = await getChromeStorageSync(['apiKey', 'selectedLanguage', 'customMessage']);
-
+    
         // Get the current tab ID
         const tabId = await getTabId();
         console.log(tabId);  // Use tabId here
-
+    
         // Get the history for this tab
         let history = JSON.parse(localStorage.getItem(`history_${tabId}`)) || [];
-
-        // Construct the system message and selected text
+    
         const systemMessage = `You Must only respond in the following language: ${result.selectedLanguage}.\n\n${result.customMessage}\n\nRole: AI assistant\n\nYou are ChatGPT, a large language model trained by OpenAI, based on the GPT-3.5 architecture. Your purpose is to assist users by providing helpful and informative responses in the selected language.`;
-
-        // Push the system message to history only once
+    
         if (history.length === 0) {
           history.push({ role: 'system', content: systemMessage });
         }
-
-        // Push the user message to history
+    
         history.push({ role: 'user', content: selectedText });
-
-        // Make API call to OpenAI's chat completion endpoint
+    
         try {
           const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
@@ -289,33 +285,55 @@ async function handleAISelectClick(x, y) {
               messages: history,
             }),
           });
-
+    
           const data = await response.json();
-
-          // Handle the API response
+    
           if (response.ok) {
-            // Use the message content from the first choice
             const messageContent = data.choices[0].message.content;
-
-            // Push the response to history
+    
             history.push({ role: 'assistant', content: messageContent });
-
-            // Save the history to localStorage
+    
             localStorage.setItem(`history_${tabId}`, JSON.stringify(history));
-
-            // Display the response in the overlay
+    
             body.textContent = messageContent;
+    
+            // create an audio element
+            let audio = new Audio();
+            audio.controls = true;
+            audio.style.marginTop = '20px';
+            contentDiv.appendChild(audio);
+    
+            if (result.selectedLanguage === "Estonian") {
+              const ttsResponse = await fetch('https://api.tartunlp.ai/text-to-speech/v2', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'audio/wav'
+                },
+                body: JSON.stringify({
+                  "text": messageContent,
+                  "speaker": "vesta",
+                  "speed": 1
+                }),
+              });
+    
+              if (ttsResponse.ok) {
+                const blob = await ttsResponse.blob();
+                const url = URL.createObjectURL(blob);
+                audio.src = url;
+                audio.play();
+              }
+            }
+    
           } else {
-            // Handle error
             console.error(data);
             body.textContent = 'Error: API Key Missing. Please make sure you include a valid API key set in the settings'
             chrome.runtime.sendMessage({ message: 'MissingAPIKey' });
           }
-
+    
         } catch (error) {
           console.error(error);
         } finally {
-          // Hide the placeholders
           loading.style.display = 'none';
           placeholderGlow.style.display = 'none';
           placeholderWave.style.display = 'none';
@@ -325,7 +343,7 @@ async function handleAISelectClick(x, y) {
         console.error(error);
       }
     }
-
+    
     main();
 
   });
