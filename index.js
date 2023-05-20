@@ -3,6 +3,9 @@ let AISelect;
 let overlay;
 let conversations = {};
 let loader;
+let userInputDiv;
+let userInputField;
+let submitButton;
 
 document.addEventListener("DOMContentLoaded", function () {
   var toggleSwitch = document.getElementById("ai-select-switch");
@@ -50,32 +53,32 @@ window.addEventListener("load", function () {
 function getSelectionEndCoordinates() {
   var sel = window.getSelection();
   if (sel.rangeCount > 0) {
-      var range = sel.getRangeAt(0).cloneRange(); // clone the range to avoid side effects
+    var range = sel.getRangeAt(0).cloneRange(); // clone the range to avoid side effects
 
-      var endNode, endOffset;
-      if (sel.isCollapsed) {
-          endNode = sel.anchorNode;
-          endOffset = sel.anchorOffset;
-      } else if (sel.anchorNode.compareDocumentPosition(sel.focusNode) === Node.DOCUMENT_POSITION_FOLLOWING ||
-          (sel.anchorNode === sel.focusNode && sel.anchorOffset > sel.focusOffset)) {
-          endNode = sel.anchorNode;
-          endOffset = sel.anchorOffset;
-      } else {
-          endNode = sel.focusNode;
-          endOffset = sel.focusOffset;
-      }
+    var endNode, endOffset;
+    if (sel.isCollapsed) {
+      endNode = sel.anchorNode;
+      endOffset = sel.anchorOffset;
+    } else if (sel.anchorNode.compareDocumentPosition(sel.focusNode) === Node.DOCUMENT_POSITION_FOLLOWING ||
+      (sel.anchorNode === sel.focusNode && sel.anchorOffset > sel.focusOffset)) {
+      endNode = sel.anchorNode;
+      endOffset = sel.anchorOffset;
+    } else {
+      endNode = sel.focusNode;
+      endOffset = sel.focusOffset;
+    }
 
-      range.setEnd(endNode, endOffset); // set the end point of the range
-      var rect = range.getBoundingClientRect(); // get the bounding rectangle of the range
+    range.setEnd(endNode, endOffset); // set the end point of the range
+    var rect = range.getBoundingClientRect(); // get the bounding rectangle of the range
 
-      var x = rect.left;
-      var y = rect.bottom;
+    var x = rect.left;
+    var y = rect.bottom;
 
-      // add scroll positions to the x and y coordinates
-      x += window.scrollX;
-      y += window.scrollY;
+    // add scroll positions to the x and y coordinates
+    x += window.scrollX;
+    y += window.scrollY;
 
-      return { x, y };
+    return { x, y };
   }
 }
 
@@ -128,12 +131,12 @@ function handleTextSelection(event) {
     }, 50);
 
     // Pass the coordinates of the button to the click handler
-    AISelect.addEventListener('click', () => handleAISelectClick(event.pageX + 20, event.pageY + 20));
+    AISelect.addEventListener('click', () => handleAISelectClick(event.pageX + 20, event.pageY + 20,selectedText));
   }
 }
 
 // Function to handle Ask GPT button click
-async function handleAISelectClick(x, y) {
+async function handleAISelectClick(x, y, selectedText) {
   AISelect.remove();
 
   overlay = document.createElement('div');
@@ -226,49 +229,108 @@ async function handleAISelectClick(x, y) {
   placeholderWave.appendChild(placeholderSpanWave);
   contentDiv.appendChild(placeholderWave);
 
-  chrome.storage.sync.get(['apiKey', 'selectedLanguage', 'customMessage'], async function (result) {
-    async function getChromeStorageSync(keys) {
-      return new Promise((resolve, reject) => {
-        chrome.storage.sync.get(keys, function (result) {
-          if (chrome.runtime.lastError) {
-            reject(chrome.runtime.lastError);
-          } else {
-            resolve(result);
-          }
-        });
+  async function getChromeStorageSync(keys) {
+    return new Promise((resolve, reject) => {
+      chrome.storage.sync.get(keys, function (result) {
+        if (chrome.runtime.lastError) {
+          reject(chrome.runtime.lastError);
+        } else {
+          resolve(result);
+        }
       });
-    }
-    function getTabId() {
-      return new Promise((resolve, reject) => {
-        chrome.runtime.sendMessage({ message: "getTabId" }, function (response) {
-          if (chrome.runtime.lastError) {
-            reject(chrome.runtime.lastError);
-          } else {
-            resolve(response.tabId);
-          }
-        });
+    });
+  }
+  
+  function getTabId() {
+    return new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage({ message: "getTabId" }, function (response) {
+        if (chrome.runtime.lastError) {
+          reject(chrome.runtime.lastError);
+        } else {
+          resolve(response.tabId);
+        }
       });
-    }
+    });
+  }
 
     async function main() {
       try {
+        let userInputDiv = document.createElement("div");
+        userInputDiv.className = "ai-select-get-in-touch ai-select-contact-form";
+        userInputDiv.style.cssText = `
+  width: 196px;
+  z-index: 9999;
+  overflow: auto;
+  background-color: rgb(255, 255, 255);
+  padding: 15px 15px 25px;
+  box-shadow: rgba(66, 47, 112, 0.2) 0px 4px 8px 0px, rgba(66, 47, 112, 0.19) 0px 6px 20px 0px;
+  border-radius: 5px;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  max-width: 650px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  display: contents;
+`;
+
+
+        let userInputField = document.createElement("input");
+        userInputField.type = "text";
+        userInputField.id = "userInputField";
+        userInputField.className = "ai-select-input-text";
+        userInputField.style.cssText = `
+  display: block;
+  width: 100%;
+  height: 36px;
+  border-width: 0 0 2px 0;
+  border-color: #000;
+  font-family: 'Lusitana', serif;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 400;
+  outline: none;
+  position: relative;
+  margin: 32px 0;
+`;
+        userInputField.placeholder = "Enter your followup message here...";
+
+        // Create a button
+        let submitButton = document.createElement("button");
+        submitButton.className = "ai-select-submit-btn";
+        submitButton.style.cssText = `
+  display: inline-block;
+  background-color: #000;
+  color: #fff;
+  font-family: 'Raleway', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 16px;
+  line-height: 24px;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+`;
+        submitButton.textContent = "Ask";
+
         const result = await getChromeStorageSync(['apiKey', 'selectedLanguage', 'customMessage']);
-    
+
         // Get the current tab ID
         const tabId = await getTabId();
         console.log(tabId);  // Use tabId here
-    
+
         // Get the history for this tab
         let history = JSON.parse(localStorage.getItem(`history_${tabId}`)) || [];
-    
+
         const systemMessage = `You Must only respond in the following language: ${result.selectedLanguage}.\n\n${result.customMessage}\n\nRole: AI assistant\n\nYou are ChatGPT, a large language model trained by OpenAI, based on the GPT-3.5 architecture. Your purpose is to assist users by providing helpful and informative responses in the selected language.`;
-    
+
         if (history.length === 0) {
           history.push({ role: 'system', content: systemMessage });
         }
-    
+
         history.push({ role: 'user', content: selectedText });
-    
+
         try {
           const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
@@ -281,24 +343,71 @@ async function handleAISelectClick(x, y) {
               messages: history,
             }),
           });
-    
+
           const data = await response.json();
-    
+
           if (response.ok) {
             const messageContent = data.choices[0].message.content;
-    
+
             history.push({ role: 'assistant', content: messageContent });
-    
+
             localStorage.setItem(`history_${tabId}`, JSON.stringify(history));
-    
+
             body.textContent = messageContent;
-    
+
+            //add event listener to follow up question button
+            submitButton.addEventListener("click", async () => {
+              let userFollowUpMessage = userInputField.value;
+              if (userFollowUpMessage.trim() !== '') {
+                // Clear the input field
+                userInputField.value = '';
+
+                // Clear body.textContent
+                body.textContent = '';
+
+                // Remove audio element
+                if (audio) {
+                  audio.remove();
+                }
+                // Remove userInputField and submitButton
+                userInputField.remove();
+                submitButton.remove();
+                // Show loading
+                loading.style.display = 'block';
+
+                // Call your main function
+                await main(userFollowUpMessage);
+              }
+            });
+
+            //Insert follow-up div and controls
+            userInputDiv.appendChild(userInputField);
+            userInputDiv.appendChild(submitButton);
+
+            userInputField.addEventListener('keyup', function () {
+              if (this.value) {
+                this.classList.add('not-empty');
+              } else {
+                this.classList.remove('not-empty');
+              }
+            });
+
+            userInputField.addEventListener("keydown", function (event) {
+              if (event.key === 'Enter') {
+                event.preventDefault();
+                submitButton.click();
+              }
+            });
+
+
             // create an audio element
             let audio = new Audio();
             audio.controls = true;
             audio.style.marginTop = '20px';
             contentDiv.appendChild(audio);
-    
+            contentDiv.appendChild(userInputDiv);
+
+            //Get TTS for Estonian
             if (result.selectedLanguage === "Estonian") {
               const ttsResponse = await fetch('https://api.tartunlp.ai/text-to-speech/v2', {
                 method: 'POST',
@@ -312,20 +421,22 @@ async function handleAISelectClick(x, y) {
                   "speed": 1
                 }),
               });
-    
+
               if (ttsResponse.ok) {
                 const blob = await ttsResponse.blob();
                 const url = URL.createObjectURL(blob);
                 audio.src = url;
               }
             }
-    
+
+
+
           } else {
             console.error(data);
             body.textContent = 'Error: API Key Missing. Please make sure you include a valid API key set in the settings'
             chrome.runtime.sendMessage({ message: 'MissingAPIKey' });
           }
-    
+
         } catch (error) {
           console.error(error);
         } finally {
@@ -338,10 +449,9 @@ async function handleAISelectClick(x, y) {
         console.error(error);
       }
     }
-    
+
     main();
 
-  });
 
 
   body.className = 'ai-select-card-text'; // Added MDB classes

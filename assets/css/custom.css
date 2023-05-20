@@ -1,3 +1,86 @@
+
+.ai-select-get-in-touch .ai-select-title {
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 36px;
+    line-height: 48px;
+    padding-bottom: 48px;
+ }
+ 
+ .ai-select-get-in-touch .ai-select-contact-form .ai-select-form-field {
+    position: relative;
+    margin: 32px 0;
+ }
+ 
+ .ai-select-get-in-touch .ai-select-contact-form .ai-select-input-text {
+    display: block;
+    width: 100%;
+    height: 36px;
+    border-width: 0 0 2px 0;
+    border-color: #000;
+    font-family: 'Lusitana', serif;
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: 400;
+    outline: none;
+ }
+ 
+ .ai-select-get-in-touch .ai-select-contact-form .ai-select-input-text:focus,
+ .ai-select-get-in-touch .ai-select-contact-form .ai-select-input-text.not-empty {
+    + .ai-select-label {
+       transform: translateY(-24px);
+    }
+ }
+ 
+ .ai-select-get-in-touch .ai-select-contact-form .ai-select-label {
+    position: absolute;
+    left: 20px;
+    bottom: 11px;
+    font-family: 'Lusitana', serif;
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: 400;
+    color: #888;
+    cursor: text;
+    transition: transform .2s ease-in-out;
+ }
+ 
+ .ai-select-get-in-touch .ai-select-contact-form .ai-select-submit-btn {
+    display: inline-block;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Raleway', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+ }
+ 
+ .ai-select-note {
+    position: absolute;
+    left: 0;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Lusitana', serif;
+    font-size: 16px;
+    line-height: 21px;
+ }
+ 
+ .ai-select-note .ai-select-link {
+    color: #888;
+    text-decoration: none;
+ }
+ 
+ .ai-select-note .ai-select-link:hover {
+    text-decoration: underline;
+ }
+
 .ai-select-popup-button:hover {
     color: #ffffff !important;
     transition: color 0.15s ease-in-out 0s, background-color 0.15s ease-in-out 0s, border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
