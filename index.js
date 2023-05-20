@@ -121,6 +121,7 @@ function handleTextSelection(event) {
     AISelect.style.paddingBottom = '19px';
     AISelect.style.paddingRight = '8px';
     AISelect.style.paddingLeft = '8px';
+    AISelect.style.height = '52px';
 
     document.body.appendChild(AISelect);
     // Stop propagation of 'mouseup' event on button
