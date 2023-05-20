@@ -253,7 +253,7 @@ async function handleAISelectClick(x, y, selectedText) {
     });
   }
 
-    async function main() {
+    async function main(inputText) {
       try {
         let userInputDiv = document.createElement("div");
         userInputDiv.className = "ai-select-get-in-touch ai-select-contact-form";
@@ -329,7 +329,7 @@ async function handleAISelectClick(x, y, selectedText) {
           history.push({ role: 'system', content: systemMessage });
         }
 
-        history.push({ role: 'user', content: selectedText });
+        history.push({ role: 'user', content: inputText });
 
         try {
           const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -404,6 +404,7 @@ async function handleAISelectClick(x, y, selectedText) {
             let audio = new Audio();
             audio.controls = true;
             audio.style.marginTop = '20px';
+            audio.style.width = '100%';
             contentDiv.appendChild(audio);
             contentDiv.appendChild(userInputDiv);
 
@@ -450,7 +451,7 @@ async function handleAISelectClick(x, y, selectedText) {
       }
     }
 
-    main();
+    main(selectedText);
 
 
 
