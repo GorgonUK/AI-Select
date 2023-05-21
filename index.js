@@ -14,7 +14,7 @@ let lastSelectionCoords = null;
  * toggle switch and sends a message to the active tab to toggle the script on or off.
  */
 document.addEventListener("DOMContentLoaded", function () {
-  var toggleSwitch = document.getElementById("ai-select-switch");
+  var toggleSwitch = document.getElementById("select-ai-switch");
   var toggleButton = document.getElementById("toggleButton");
 
   toggleButton.addEventListener("click", function () {
@@ -160,7 +160,7 @@ async function handleAISelectClick(x, y, selectedText) {
 
   // Create modal header
   const modalHeader = document.createElement('div');
-  modalHeader.className = 'ai-select-modal-header';
+  modalHeader.className = 'select-ai-modal-header';
   modalHeader.style.display = 'flex';
   modalHeader.style.justifyContent = 'space-between';
   modalHeader.style.alignItems = 'center';
@@ -169,14 +169,14 @@ async function handleAISelectClick(x, y, selectedText) {
 
   // Create modal title
   const modalTitle = document.createElement('h5');
-  modalTitle.className = 'ai-select-modal-title';
+  modalTitle.className = 'select-ai-modal-title';
   modalTitle.textContent = ' ';
   modalTitle.style.fontSize = '1em';
 
   // Create close button
   const closeButton = document.createElement('button');
   closeButton.type = 'button';
-  closeButton.className = 'ai-select-btn-close';
+  closeButton.className = 'select-ai-btn-close';
   closeButton.setAttribute('aria-label', 'Close');
   closeButton.style.padding = "calc(1rem*0.5) calc(1rem*0.5)";
   closeButton.style.margin = "calc(1rem*-0.5) calc(1rem*-0.5) calc(1rem*-0.5) auto";
@@ -207,7 +207,7 @@ async function handleAISelectClick(x, y, selectedText) {
   });
 
   const contentDiv = document.createElement('div');
-  contentDiv.className = 'ai-select-card-body'; // Added MDB classes
+  contentDiv.className = 'select-ai-card-body'; // Added MDB classes
   contentDiv.style.padding = '1.25rem'; // Typical padding for "card-body"
   const body = document.createElement('div');
 
@@ -239,7 +239,7 @@ async function handleAISelectClick(x, y, selectedText) {
 `);
 
   const loading = document.createElement('p');
-  loading.className = 'ai-select-card-text ai-select-mt-0 achgpt-loader';
+  loading.className = 'select-ai-card-text select-ai-mt-0 achgpt-loader';
   loading.textContent = '';
   loading.style.color = 'rgb(44, 34, 34)';
   loading.style.fontSize = '18px';
@@ -256,16 +256,16 @@ async function handleAISelectClick(x, y, selectedText) {
 
   // Placeholders
   const placeholderGlow = document.createElement('p');
-  placeholderGlow.className = 'ai-select-placeholder-glow';
+  placeholderGlow.className = 'select-ai-placeholder-glow';
   const placeholderSpanGlow = document.createElement('span');
-  placeholderSpanGlow.className = 'ai-select-placeholder ai-select-col-12';
+  placeholderSpanGlow.className = 'select-ai-placeholder select-ai-col-12';
   placeholderGlow.appendChild(placeholderSpanGlow);
   contentDiv.appendChild(placeholderGlow);
 
   const placeholderWave = document.createElement('p');
   placeholderWave.className = 'placeholder-wave';
   const placeholderSpanWave = document.createElement('span');
-  placeholderSpanWave.className = 'ai-select-placeholder ai-select-col-12';
+  placeholderSpanWave.className = 'select-ai-placeholder select-ai-col-12';
   placeholderWave.appendChild(placeholderSpanWave);
   contentDiv.appendChild(placeholderWave);
 
@@ -312,7 +312,7 @@ async function handleAISelectClick(x, y, selectedText) {
   async function main(inputText) {
     try {
       let userInputDiv = document.createElement("div");
-      userInputDiv.className = "ai-select-get-in-touch ai-select-contact-form";
+      userInputDiv.className = "select-ai-get-in-touch select-ai-contact-form";
       userInputDiv.style.cssText = `
   width: 196px;
   z-index: 9999;
@@ -335,7 +335,7 @@ async function handleAISelectClick(x, y, selectedText) {
       let userInputField = document.createElement("input");
       userInputField.type = "text";
       userInputField.id = "userInputField";
-      userInputField.className = "ai-select-input-text";
+      userInputField.className = "select-ai-input-text";
       userInputField.style.cssText = `
   display: block;
   width: 100%;
@@ -355,7 +355,7 @@ async function handleAISelectClick(x, y, selectedText) {
 
       // Create a button
       let submitButton = document.createElement("button");
-      submitButton.className = "ai-select-submit-btn";
+      submitButton.className = "select-ai-submit-btn";
       submitButton.style.cssText = `
   display: inline-block;
   background-color: #000;
@@ -563,7 +563,7 @@ async function handleAISelectClick(x, y, selectedText) {
 
   main(selectedText);
 
-  body.className = 'ai-select-card-text'; // Added MDB classes
+  body.className = 'select-ai-card-text'; // Added MDB classes
   body.style.color = 'rgb(44 34 34)';
   body.style.fontSize = 'inherit';
   body.style.float = 'left';

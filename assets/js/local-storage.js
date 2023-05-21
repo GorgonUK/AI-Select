@@ -15,7 +15,7 @@ function clearHistory() {
 function saveSettings() {
   var languageSelect = document.getElementById("language-select");
   var apiKeyInput = document.getElementById("apiKeyInput");
-  var toggleSwitch = document.getElementById("ai-select-switch");
+  var toggleSwitch = document.getElementById("select-ai-switch");
 
   var languageValue = languageSelect.options[languageSelect.selectedIndex].text;
   var apiKeyValue = apiKeyInput.value;
@@ -41,7 +41,7 @@ function saveSettings() {
 window.addEventListener("load", function () {
   var languageSelect = document.getElementById("language-select");
   var apiKeyInput = document.getElementById("apiKeyInput");
-  var toggleSwitch = document.getElementById("ai-select-switch");
+  var toggleSwitch = document.getElementById("select-ai-switch");
   var saveSettingsButton = document.getElementById("saveSettingsButton");
 
   // Function to check if all required fields have information

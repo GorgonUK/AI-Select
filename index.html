@@ -11,9 +11,9 @@
   <link href="./assets/css/animate.min.css" rel="stylesheet" />
   <!-- JS -->
   <script type="text/javascript" src="./assets/js/custom.js"></script>
-  <title>Select text with AI Select</title>
+  <title>Select text with Select AI</title>
   <style>
-    .ai-select-container {
+    .select-ai-container {
       min-width: 350px;
       max-width: 350px;
       min-height: 630px;
@@ -24,7 +24,7 @@
   </style>
 </head>
 <body>
-  <div class="ai-select-container">
+  <div class="select-ai-container">
     <div class="row">
       <div class="col-md-6">
         <div class="text-center animate__animated animate__fadeInDown animate__faster">
@@ -34,15 +34,15 @@
           <div class="card">
             <div class="card-body animate__animated animate__fadeInUp animate__delay-0.3s animate__faster">
               <div class="form-check form-switch d-flex flex-column align-items-center p-0">
-                <h1 class="display-6">Welcome to AI Select</h1>
+                <h1 class="display-6">Welcome to Select AI</h1>
                 <div class="form-check form-switch" style="padding-left:0px">
                   <label class="form-check-label" for="flexSwitchCheckDefault">Activate</label>
-                  <input class="form-check-input m-2" type="checkbox" role="switch" id="ai-select-switch" />
+                  <input class="form-check-input m-2" type="checkbox" role="switch" id="select-ai-switch" />
                 </div>
                 <small class="form-text text-center text-muted">Please note that a reload F5 (Windows/Linux) or ⌘+R
                   (MacOS) is required for the changes to
                   take effect</small>
-                <label class="form-check-label" for="ai-select-switch" data-toggle="tooltip"
+                <label class="form-check-label" for="select-ai-switch" data-toggle="tooltip"
                   title="Note: Turning this on or off may require a page refresh.">
                 </label>
               </div>
@@ -58,7 +58,7 @@
               <label class="form-label" for="formControlLg">API key <span class="text-danger">(required)</span></label>
             </div>
             <div class="form-floating mt-3" data-toggle="tooltip"
-              title="Choose which langauge you'd like to AI Select to respond in.">
+              title="Choose which langauge you'd like to Select AI to respond in.">
               <select class="form-select" id="language-select">
               </select>
               <label for="language-select">Response language</label>
@@ -66,7 +66,7 @@
             <div class="row mt-4 mb-2">
               <div class="col-md-6">
                 <button class="btn btn-primary" id="saveSettingsButton" data-mdb-ripple-color="dark"
-                  data-mdb-toggle="modal" data-mdb-target="#ai-select-modal-save-settings">
+                  data-mdb-toggle="modal" data-mdb-target="#select-ai-modal-save-settings">
                   Save Settings
                 </button>
               </div>
@@ -109,7 +109,7 @@
                 <div id="basicAccordionCollapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                   data-mdb-parent="#basicAccordion">
                   <div class="accordion-body">
-                    Response language allows you to choose which language you'd like AI Select to respond in.
+                    Response language allows you to choose which language you'd like Select AI to respond in.
                     By default it is set to English, but you can choose from a variety of languages.
                   </div>
                 </div>
@@ -119,13 +119,13 @@
         </div>
       </div>
       <!-- Modal -->
-      <div class="modal top fade animate__animated animate__fadeIn" id="ai-select-modal-save-settings" tabindex="-1"
-        aria-labelledby="ai-select-modal-save-settingsLabel" aria-hidden="true" data-mdb-backdrop="true"
+      <div class="modal top fade animate__animated animate__fadeIn" id="select-ai-modal-save-settings" tabindex="-1"
+        aria-labelledby="select-ai-modal-save-settingsLabel" aria-hidden="true" data-mdb-backdrop="true"
         data-mdb-keyboard="true">
         <div class="modal-dialog modal-sm ">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="ai-select-modal-save-settingsLabel">
+              <h5 class="modal-title" id="select-ai-modal-save-settingsLabel">
                 Saved</h5>
               <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
             </div>

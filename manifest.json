@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "AI Select",
-  "version": "2.0.2",
-  "description": "Enhance browsing with AI Select Select: Multilingual convos, contextual queries, effortless history.",
+  "name": "Select AI",
+  "version": "2.0.3",
+  "description": "Enhance browsing with Select AI: Multilingual convos, contextual queries, effortless history.",
   "permissions": [
     "tabs",
     "storage",
@@ -12,9 +12,9 @@
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
   },
   "icons": {
-    "48": "assets/logo/AISelect-48.png",
-    "128": "assets/logo/AISelect-128.png",
-    "512": "assets/logo/AISelect-512.png"
+    "48": "assets/logo/SelectAI-48.png",
+    "128": "assets/logo/SelectAI-128.png",
+    "512": "assets/logo/SelectAI-512.png"
   },
   "background": {
     "service_worker": "background.js"
@@ -31,7 +31,7 @@
     }
   ],
   "action": {
-    "default_icon": "assets/logo/AISelect-512.png",
+    "default_icon": "assets/logo/SelectAI-512.png",
     "default_popup": "index.html"
   }
 }
