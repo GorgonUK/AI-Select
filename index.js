@@ -7,10 +7,6 @@ let userInputField;
 let submitButton;
 let audio;
 
-document.addEventListener('mouseup', function () {
-  lastSelectionCoords = getSelectionEndCoordinates();
-});
-
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message === "selectAIContextItemClicked") {
     // If no selection was made, don't do anything
