@@ -98,6 +98,7 @@ async function handleAISelectClick(x, y, selectedText) {
   }
 
   overlay = document.createElement('div');
+overlay.attachShadow({mode: 'open'});
   overlay.className = 'overlay card'; // Added MDB classes
   overlay.style.position = 'absolute';
   overlay.style.top = `${y}px`;
@@ -138,8 +139,23 @@ async function handleAISelectClick(x, y, selectedText) {
   const closeButton = document.createElement('button');
   closeButton.type = 'button';
   closeButton.className = 'ai-select-btn-close';
-  closeButton.setAttribute('data-mdb-dismiss', 'modal');
   closeButton.setAttribute('aria-label', 'Close');
+  closeButton.style.padding = "calc(1rem*0.5) calc(1rem*0.5)";
+closeButton.style.margin = "calc(1rem*-0.5) calc(1rem*-0.5) calc(1rem*-0.5) auto";
+closeButton.style.marginRight = "4px";
+closeButton.style.webkitAppearance = "button";
+closeButton.style.boxSizing = "content-box";
+closeButton.style.width = "1em";
+closeButton.style.height = "1em";
+closeButton.style.color = "rgb(0, 0, 0)";
+closeButton.style.opacity = "0.5";
+closeButton.style.background = 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 16 16\'%3E%3Cpath d=\'M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z\'/%3E%3C/svg%3E") 50% center / 1em no-repeat transparent';
+closeButton.style.borderWidth = "0px";
+closeButton.style.borderStyle = "initial";
+closeButton.style.borderColor = "initial";
+closeButton.style.borderImage = "initial";
+closeButton.style.borderRadius = "0.25rem";
+closeButton.style.cursor = "pointer";
 
   // Append modal title and close button to modal header
   modalHeader.innerHTML = `
@@ -157,17 +173,41 @@ async function handleAISelectClick(x, y, selectedText) {
   contentDiv.style.padding = '1.25rem'; // Typical padding for "card-body"
   const body = document.createElement('div');
 
-  //indicate the bot is loading
-  const loading = document.createElement('p');
-  loading.className = 'ai-select-card-text ai-select-mt-0 achgpt-loader';
-  loading.textContent = '';
-  loading.style.color = 'rgb(44, 34, 34)';
-  loading.style.fontSize = '18px';
-  loading.style.float = 'left';
-  loading.style.fontWeight = 'normal';
-  loading.style.fontFamily = 'Roboto';
-  loading.style.height = '11px';
-  loading.style.width = '88px';
+//Dynamic Styles
+let dynamicStyles = null;
+
+function addAnimation(body) {
+  if (!dynamicStyles) {
+    dynamicStyles = document.createElement('style');
+    dynamicStyles.type = 'text/css';
+    overlay.shadowRoot.appendChild(dynamicStyles);
+  }
+
+  Promise.resolve().then(() => {
+    dynamicStyles.sheet.insertRule(body, dynamicStyles.sheet.cssRules.length);
+  });
+}
+
+addAnimation(`
+  @keyframes p7 {
+    0% {background-size: 0% 100%}
+    100% {background-size: 120% 100%}
+  }
+`);
+
+const loading = document.createElement('p');
+loading.className = 'ai-select-card-text ai-select-mt-0 achgpt-loader';
+loading.textContent = '';
+loading.style.color = 'rgb(44, 34, 34)';
+loading.style.fontSize = '18px';
+loading.style.float = 'left';
+loading.style.fontWeight = 'normal';
+loading.style.fontFamily = 'Roboto';
+loading.style.height = '15px';
+loading.style.width = '100px';
+loading.style.webkitMask = 'radial-gradient(circle closest-side,#000000 94%,#0000) left/20% 100%';
+loading.style.background = 'linear-gradient(#000000 0 0) left/0% 100% no-repeat #E4E4ED';
+loading.style.animation = 'p7 4s infinite steps(6)';
 
   contentDiv.appendChild(loading);
 
@@ -435,9 +475,9 @@ async function handleAISelectClick(x, y, selectedText) {
   contentDiv.appendChild(body);
 
   // Append modal header to overlay
-  overlay.appendChild(modalHeader);
+  overlay.shadowRoot.appendChild(modalHeader);
 
-  overlay.appendChild(contentDiv);
+  overlay.shadowRoot.appendChild(contentDiv);
 
   // Append overlay to the document body
   document.body.appendChild(overlay);
