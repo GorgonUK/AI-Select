@@ -27,6 +27,7 @@ chrome.runtime.onMessage.addListener(
     }
   });
   
+  //When context menu item is clicked
   chrome.contextMenus.onClicked.addListener(function(info, tab) {
     if (info.menuItemId === "selectAIContext") {
       chrome.tabs.sendMessage(tab.id, {

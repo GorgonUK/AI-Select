@@ -15,12 +15,10 @@ function clearHistory() {
 function saveSettings() {
   var languageSelect = document.getElementById("language-select");
   var apiKeyInput = document.getElementById("apiKeyInput");
-  var customMessageInput = document.getElementById("customMessageInput");
   var toggleSwitch = document.getElementById("ai-select-switch");
 
   var languageValue = languageSelect.options[languageSelect.selectedIndex].text;
   var apiKeyValue = apiKeyInput.value;
-  var customMessageValue = customMessageInput.value;
   var toggleSwitchValue = toggleSwitch.checked;
 
   clearHistory();
@@ -30,7 +28,6 @@ function saveSettings() {
     {
       selectedLanguage: languageValue,
       apiKey: apiKeyValue,
-      customMessage: customMessageValue,
       toggleSwitch: toggleSwitchValue,
     },
     function () {
@@ -44,7 +41,6 @@ function saveSettings() {
 window.addEventListener("load", function () {
   var languageSelect = document.getElementById("language-select");
   var apiKeyInput = document.getElementById("apiKeyInput");
-  var customMessageInput = document.getElementById("customMessageInput");
   var toggleSwitch = document.getElementById("ai-select-switch");
   var saveSettingsButton = document.getElementById("saveSettingsButton");
 
@@ -52,7 +48,6 @@ window.addEventListener("load", function () {
   function checkFields() {
     var languageValue = languageSelect.value;
     var apiKeyValue = apiKeyInput.value;
-    var customMessageValue = customMessageInput.value;
 
     // Enable or disable the save settings button based on field values
     if (apiKeyValue) {
@@ -67,7 +62,6 @@ window.addEventListener("load", function () {
   // Add input event listeners to check if all required fields have information
   languageSelect.addEventListener("input", checkFields);
   apiKeyInput.addEventListener("input", checkFields);
-  customMessageInput.addEventListener("input", checkFields);
 
   // Add "change" event listener to the toggle switch
   toggleSwitch.addEventListener("change", function (e) {
@@ -80,18 +74,16 @@ window.addEventListener("load", function () {
 
   // Get the values from the chrome.storage
   chrome.storage.sync.get(
-    ["selectedLanguage", "apiKey", "customMessage", "toggleSwitch"],
+    ["selectedLanguage", "apiKey", "toggleSwitch"],
     function (items) {
       // Set the values in the form fields
       languageSelect.value = items.selectedLanguage || "";
       apiKeyInput.value = items.apiKey || "";
-      customMessageInput.value = items.customMessage || "";
       toggleSwitch.checked = items.toggleSwitch || false;
 
       // Add "active" class to elements
       languageSelect.classList.add("active");
       apiKeyInput.classList.add("active");
-      customMessageInput.classList.add("active");
 
       // Check fields on page load
       checkFields();
