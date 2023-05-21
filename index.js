@@ -8,22 +8,36 @@ let submitButton;
 let audio;
 let lastSelectionCoords = null;
 
-
+/**
+ * Adds an event listener to the DOMContentLoaded event and sets up a click event listener
+ * for the toggle button. When the toggle button is clicked, it updates the state of the
+ * toggle switch and sends a message to the active tab to toggle the script on or off.
+ */
 document.addEventListener("DOMContentLoaded", function () {
   var toggleSwitch = document.getElementById("ai-select-switch");
   var toggleButton = document.getElementById("toggleButton");
 
   toggleButton.addEventListener("click", function () {
     var enableScript = toggleSwitch.checked;
-    chrome.storage.sync.set({ toggleSwitch: enableScript }, function () {
-      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, { toggleScript: true, enable: enableScript });
+    chrome.storage.sync.set({
+      toggleSwitch: enableScript
+    }, function () {
+      chrome.tabs.query({
+        active: true,
+        currentWindow: true
+      }, function (tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          toggleScript: true,
+          enable: enableScript
+        });
       });
     });
   });
 });
 
-// Clear Chat history in storage
+/**
+ * Clears the browsing history stored in localStorage by removing all keys that start with "history_".
+ */
 function clearHistory() {
   // Get all keys from the local storage
   const keys = Object.keys(localStorage);
@@ -37,10 +51,18 @@ function clearHistory() {
   }
 }
 
+/**
+ * Adds an event listener to the window object that listens for the "load" event.
+ * When the event is triggered, the clearHistory function is called.
+ */
 window.addEventListener("load", function () {
   clearHistory();
 });
 
+/**
+ * Gets the coordinates of the end of the current selection in the window.
+ * @returns An object containing the x and y coordinates of the end of the selection.
+ */
 function getSelectionEndCoordinates() {
   var sel = window.getSelection();
   if (sel.rangeCount > 0) {
@@ -69,11 +91,22 @@ function getSelectionEndCoordinates() {
     x += window.scrollX;
     y += window.scrollY;
 
-    return { x, y };
+    return {
+      x,
+      y
+    };
   }
 }
 
-// Message event handler
+
+/**
+ * Listens for a message from the extension popup indicating that the "select AI context" item has been clicked.
+ * If the message is received, retrieves the coordinates of the last selection and passes them to the handleAISelectClick function.
+ * @param {Object} request - The message received from the extension popup.
+ * @param {Object} sender - The sender of the message.
+ * @param {function} sendResponse - The function to send a response back to the sender.
+ * @returns None
+ */
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message === "selectAIContextItemClicked") {
     let lastSelectionCoords = getSelectionEndCoordinates();
@@ -91,7 +124,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   }
 });
 
-// Function to handle Ask GPT button click
+
 async function handleAISelectClick(x, y, selectedText) {
 
   if (overlay) {
@@ -100,7 +133,9 @@ async function handleAISelectClick(x, y, selectedText) {
 
   // Create overlay 
   overlay = document.createElement('div');
-  overlay.attachShadow({ mode: 'open' });
+  overlay.attachShadow({
+    mode: 'open'
+  });
   overlay.id = 'shadow-dom-overlay';
   overlay.className = 'overlay card';
   overlay.style.position = 'absolute';
@@ -130,6 +165,7 @@ async function handleAISelectClick(x, y, selectedText) {
   modalHeader.style.justifyContent = 'space-between';
   modalHeader.style.alignItems = 'center';
   modalHeader.style.height = '37px';
+  modalHeader.style.cursor = 'move';
 
   // Create modal title
   const modalTitle = document.createElement('h5');
@@ -178,6 +214,11 @@ async function handleAISelectClick(x, y, selectedText) {
   //Dynamic Styles
   let dynamicStyles = null;
 
+  /**
+   * Adds a CSS animation to the overlay element.
+   * @param {string} body - The CSS animation body to add to the overlay element.
+   * @returns None
+   */
   function addAnimation(body) {
     if (!dynamicStyles) {
       dynamicStyles = document.createElement('style');
@@ -228,6 +269,11 @@ async function handleAISelectClick(x, y, selectedText) {
   placeholderWave.appendChild(placeholderSpanWave);
   contentDiv.appendChild(placeholderWave);
 
+  /**
+   * Asynchronously retrieves data from Chrome's synchronized storage.
+   * @param {Array<string>} keys - An array of keys to retrieve from storage.
+   * @returns {Promise} A promise that resolves with the retrieved data or rejects with an error.
+   */
   async function getChromeStorageSync(keys) {
     return new Promise((resolve, reject) => {
       chrome.storage.sync.get(keys, function (result) {
@@ -240,9 +286,15 @@ async function handleAISelectClick(x, y, selectedText) {
     });
   }
 
+  /**
+   * Returns a Promise that resolves with the ID of the current tab.
+   * @returns {Promise<number>} A Promise that resolves with the ID of the current tab.
+   */
   function getTabId() {
     return new Promise((resolve, reject) => {
-      chrome.runtime.sendMessage({ message: "getTabId" }, function (response) {
+      chrome.runtime.sendMessage({
+        message: "getTabId"
+      }, function (response) {
         if (chrome.runtime.lastError) {
           reject(chrome.runtime.lastError);
         } else {
@@ -252,6 +304,11 @@ async function handleAISelectClick(x, y, selectedText) {
     });
   }
 
+  /**
+   * The main function that handles the user input and generates a response using the GPT-3.5 model.
+   * @param {string} inputText - The user's input text.
+   * @returns None
+   */
   async function main(inputText) {
     try {
       let userInputDiv = document.createElement("div");
@@ -295,7 +352,7 @@ async function handleAISelectClick(x, y, selectedText) {
   padding-left: 10px;
 `;
       userInputField.placeholder = "Enter your followup message here...";
-    
+
       // Create a button
       let submitButton = document.createElement("button");
       submitButton.className = "ai-select-submit-btn";
@@ -318,7 +375,7 @@ async function handleAISelectClick(x, y, selectedText) {
 
       // Get the current tab ID
       const tabId = await getTabId();
-      console.log(tabId);  // Use tabId here
+      console.log(tabId); // Use tabId here
 
       // Get the history for this tab
       let history = JSON.parse(localStorage.getItem(`history_${tabId}`)) || [];
@@ -326,10 +383,16 @@ async function handleAISelectClick(x, y, selectedText) {
       const systemMessage = `You Must only respond in the following language: ${result.selectedLanguage}.\n\nRole: AI assistant\n\nYou are ChatGPT, a large language model trained by OpenAI, based on the GPT-3.5 architecture. Your purpose is to assist users by providing helpful and informative responses in the selected language.`;
 
       if (history.length === 0) {
-        history.push({ role: 'system', content: systemMessage });
+        history.push({
+          role: 'system',
+          content: systemMessage
+        });
       }
 
-      history.push({ role: 'user', content: inputText });
+      history.push({
+        role: 'user',
+        content: inputText
+      });
 
       try {
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -349,7 +412,10 @@ async function handleAISelectClick(x, y, selectedText) {
         if (response.ok) {
           const messageContent = data.choices[0].message.content;
 
-          history.push({ role: 'assistant', content: messageContent });
+          history.push({
+            role: 'assistant',
+            content: messageContent
+          });
 
           localStorage.setItem(`history_${tabId}`, JSON.stringify(history));
 
@@ -474,13 +540,12 @@ async function handleAISelectClick(x, y, selectedText) {
               await main(userFollowUpMessage);
             }
           });
-
-
-
         } else {
           console.error(data);
           body.textContent = 'Error: API Key Missing. Please make sure you include a valid API key set in the settings'
-          chrome.runtime.sendMessage({ message: 'MissingAPIKey' });
+          chrome.runtime.sendMessage({
+            message: 'MissingAPIKey'
+          });
         }
 
       } catch (error) {
@@ -497,8 +562,6 @@ async function handleAISelectClick(x, y, selectedText) {
   }
 
   main(selectedText);
-
-
 
   body.className = 'ai-select-card-text'; // Added MDB classes
   body.style.color = 'rgb(44 34 34)';
@@ -523,51 +586,102 @@ async function handleAISelectClick(x, y, selectedText) {
   // Stop propagation of 'mouseup' event on overlay
   overlay.addEventListener('mouseup', event => event.stopPropagation());
 
-  
-  let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-modalHeader.addEventListener('pointerdown', pointerDrag);
 
-function pointerDrag(e) {
-  if (e.target === modalHeader) {
-    e.preventDefault();
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    pos1 = pos3 - overlay.getBoundingClientRect().left;
-    pos2 = pos4 - overlay.getBoundingClientRect().top;
+  let pos1 = 0,
+    pos2 = 0,
+    pos3 = 0,
+    pos4 = 0;
+  let drag = false; // New state variable
+  let animationFrameId;
 
-    document.addEventListener('pointermove', elementDrag);
-    document.addEventListener('pointerup', stopElementDrag);
+  modalHeader.addEventListener('pointerdown', pointerDrag);
 
-    // Stop event propagation to child elements
+  /**
+   * Handles the dragging of an element when the user clicks and drags the mouse.
+   * @param {PointerEvent} e - The pointer event object.
+   * @returns None
+   */
+  function pointerDrag(e) {
+    if (e.target === modalHeader) {
+      e.preventDefault();
+
+      // calculate event X, Y coordinates
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+
+      // assign default values for top and left properties
+      if (!overlay.style.left) {
+        overlay.style.left = '0px'
+      }
+      if (!overlay.style.top) {
+        overlay.style.top = '0px'
+      }
+
+      // calculate integer values for top and left properties
+      pos1 = parseInt(overlay.style.left);
+      pos2 = parseInt(overlay.style.top);
+
+      drag = true; // Start dragging
+
+      document.addEventListener('pointermove', elementDrag);
+      document.addEventListener('pointerup', stopElementDrag);
+
+      // Stop event propagation to child elements
+      const childElements = overlay.querySelectorAll('*');
+      childElements.forEach(element => {
+        element.addEventListener('pointerdown', stopPropagation);
+      });
+    }
+  }
+
+  /**
+   * Handles the dragging of an element by updating its position based on the mouse movement.
+   * @param {MouseEvent} e - The mouse event object.
+   * @returns {boolean} - Returns false to prevent default behavior.
+   */
+  function elementDrag(e) {
+    if (!drag) {
+      return;
+    }
+    if (animationFrameId) { // If an animation frame is already requested, cancel it
+      window.cancelAnimationFrame(animationFrameId);
+    }
+    // Request the next animation frame and move the element
+    animationFrameId = window.requestAnimationFrame(() => {
+      overlay.style.left = pos1 + e.clientX - pos3 + 'px';
+      overlay.style.top = pos2 + e.clientY - pos4 + 'px';
+    });
+    return false;
+  }
+
+  /**
+   * Stops the dragging of an element by removing event listeners and canceling any animation frames.
+   * @returns None
+   */
+  function stopElementDrag() {
+    drag = false; // Stop dragging
+
+    document.removeEventListener('pointerup', stopElementDrag);
+    document.removeEventListener('pointermove', elementDrag);
+
+    // Cancel the animation frame when the dragging stops
+    if (animationFrameId) {
+      window.cancelAnimationFrame(animationFrameId);
+    }
+
+    // Remove event listeners from child elements
     const childElements = overlay.querySelectorAll('*');
     childElements.forEach(element => {
-      element.addEventListener('pointerdown', stopPropagation);
+      element.removeEventListener('pointerdown', stopPropagation);
     });
   }
+
+  /**
+   * Stops the propagation of an event.
+   * @param {Event} e - The event object to stop propagation on.
+   * @returns None
+   */
+  function stopPropagation(e) {
+    e.stopPropagation();
+  }
 }
-
-function elementDrag(e) {
-  pos3 = e.clientX;
-  pos4 = e.clientY;
-  overlay.style.top = pos4 - pos2 + "px";
-  overlay.style.left = pos3 - pos1 + "px";
-}
-
-function stopElementDrag() {
-  document.removeEventListener('pointerup', stopElementDrag);
-  document.removeEventListener('pointermove', elementDrag);
-
-  // Remove event listeners from child elements
-  const childElements = overlay.querySelectorAll('*');
-  childElements.forEach(element => {
-    element.removeEventListener('pointerdown', stopPropagation);
-  });
-}
-
-function stopPropagation(e) {
-  e.stopPropagation();
-}
-}
-
-
-
