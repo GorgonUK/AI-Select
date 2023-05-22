@@ -101,7 +101,7 @@ function getSelectionEndCoordinates() {
 
 /**
  * Listens for a message from the extension popup indicating that the "select AI context" item has been clicked.
- * If the message is received, retrieves the coordinates of the last selection and passes them to the handleAISelectClick function.
+ * If the message is received, retrieves the coordinates of the last selection and passes them to the handleSelectAIClick function.
  * @param {Object} request - The message received from the extension popup.
  * @param {Object} sender - The sender of the message.
  * @param {function} sendResponse - The function to send a response back to the sender.
@@ -119,13 +119,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // Add a slight delay to mimic the CSS transition effect
     setTimeout(() => {
       // Trigger the function using the coordinates of the last selection
-      handleAISelectClick(lastSelectionCoords.x, lastSelectionCoords.y, request.data);
+      handleSelectAIClick(lastSelectionCoords.x, lastSelectionCoords.y, request.data);
     }, 50);
   }
 });
 
 
-async function handleAISelectClick(x, y, selectedText) {
+async function handleSelectAIClick(x, y, selectedText) {
 
   if (overlay) {
     overlay.remove();
