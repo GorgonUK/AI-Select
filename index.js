@@ -63,41 +63,6 @@ window.addEventListener("load", function () {
  * Gets the coordinates of the end of the current selection in the window.
  * @returns An object containing the x and y coordinates of the end of the selection.
  */
-function getSelectionEndCoordinates() {
-  var sel = window.getSelection();
-  if (sel.rangeCount > 0) {
-    var range = sel.getRangeAt(0).cloneRange(); // clone the range to avoid side effects
-
-    var endNode, endOffset;
-    if (sel.isCollapsed) {
-      endNode = sel.anchorNode;
-      endOffset = sel.anchorOffset;
-    } else if (sel.anchorNode.compareDocumentPosition(sel.focusNode) === Node.DOCUMENT_POSITION_FOLLOWING ||
-      (sel.anchorNode === sel.focusNode && sel.anchorOffset > sel.focusOffset)) {
-      endNode = sel.anchorNode;
-      endOffset = sel.anchorOffset;
-    } else {
-      endNode = sel.focusNode;
-      endOffset = sel.focusOffset;
-    }
-
-    range.setEnd(endNode, endOffset); // set the end point of the range
-    var rect = range.getBoundingClientRect(); // get the bounding rectangle of the range
-
-    var x = rect.left;
-    var y = rect.bottom;
-
-    // add scroll positions to the x and y coordinates
-    x += window.scrollX;
-    y += window.scrollY;
-
-    return {
-      x,
-      y
-    };
-  }
-}
-
 
 /**
  * Listens for a message from the extension popup indicating that the "select AI context" item has been clicked.
@@ -107,22 +72,38 @@ function getSelectionEndCoordinates() {
  * @param {function} sendResponse - The function to send a response back to the sender.
  * @returns None
  */
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.message === "selectAIContextItemClicked") {
-    let lastSelectionCoords = getSelectionEndCoordinates();
+let clickCoords = {};
 
-    // If no selection was made, don't do anything
-    if (!lastSelectionCoords) {
+window.addEventListener('contextmenu', function (event) {
+  clickCoords = { x: event.clientX, y: event.clientY + window.scrollY };
+});
+
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.message === 'getClickCoords') {
+    sendResponse(clickCoords);
+  } else if (request.message === "selectAIContextItemClicked") {
+    // Check if x and y coordinates are in request
+    debugger;
+    if (!request.data || !request.x || !request.y) {
       return;
     }
+    // Get the current selection
+    var selection = window.getSelection();
 
+    // Check if there is any selection
+    if (selection.rangeCount > 0) {
+      // Remove all ranges from the selection
+      selection.removeAllRanges();
+    }
     // Add a slight delay to mimic the CSS transition effect
     setTimeout(() => {
-      // Trigger the function using the coordinates of the last selection
-      handleSelectAIClick(lastSelectionCoords.x, lastSelectionCoords.y, request.data);
+      // Trigger the function using the coordinates from the context menu click
+      handleSelectAIClick(request.x, request.y, request.data);
     }, 50);
   }
 });
+
 
 
 async function handleSelectAIClick(x, y, selectedText) {
@@ -140,7 +121,7 @@ async function handleSelectAIClick(x, y, selectedText) {
   overlay.className = 'overlay card';
   overlay.style.position = 'absolute';
   overlay.style.top = `${y}px`;
-  overlay.style.left = '0';
+  overlay.style.left = `${x}px`;
   overlay.style.right = '0';
   overlay.style.marginLeft = 'auto';
   overlay.style.marginRight = 'auto';

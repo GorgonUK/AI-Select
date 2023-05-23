@@ -50,13 +50,17 @@ chrome.runtime.onMessage.addListener(
    */
   chrome.contextMenus.onClicked.addListener(function(info, tab) {
     if (info.menuItemId === "selectAIContext") {
-      chrome.tabs.sendMessage(tab.id, {
-        message: "selectAIContextItemClicked",
-        data: info.selectionText,
-        event: info
+      chrome.tabs.sendMessage(tab.id, { message: 'getClickCoords' }, function (clickCoords) {
+        chrome.tabs.sendMessage(tab.id, {
+          message: "selectAIContextItemClicked",
+          data: info.selectionText,
+          x: clickCoords.x,
+          y: clickCoords.y
+        });
       });
     }
   });
+  
   
   /**
    * Listener function that is called when the extension is installed.
