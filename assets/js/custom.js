@@ -1,5 +1,5 @@
 async function fetchLanguages() {
-  // list of languages
+  // List of languages
   const languageList = [
     'Afrikaans', 'Albanian', 'Amharic', 'Arabic', 'Armenian', 'Azerbaijani', 'Basque', 
     'Belarusian', 'Bengali', 'Bosnian', 'Bulgarian', 'Burmese', 'Catalan', 'Cebuano', 
@@ -18,13 +18,13 @@ async function fetchLanguages() {
     'Uzbek', 'Vietnamese', 'Welsh', 'Xhosa', 'Yiddish', 'Yoruba', 'Zulu'
   ];
 
-  // get the select element
+  // Get the select element
   const select = document.getElementById('language-select');
 
-  // clear the select element
+  // Clear the select element
   select.innerHTML = '';
 
-  // create an option element for each language and append it to the select
+  // Create an option element for each language and append it to the select
   for (const language of languageList) {
     const option = document.createElement('option');
     option.value = language;
@@ -33,12 +33,72 @@ async function fetchLanguages() {
   }
 }
 
-// call the function
+// Call the function
 document.addEventListener('DOMContentLoaded', (event) => {
   fetchLanguages();
   
-  // current year
+  // Current year
 const currentYear = new Date().getFullYear();
 document.getElementById("current-year").textContent = currentYear;
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  var submitFeedback = function() {
+    // User input value
+    var feedback = document.getElementById('submitFeedbackInput').value;
+
+    // Current date and time
+    var date = new Date().toISOString();
+
+    // Browser type and version
+    var userAgent = navigator.userAgent;
+
+    // Connection information
+    var connection = navigator.connection ? navigator.connection.effectiveType : 'unknown';
+
+    // Firebase endpoint
+    var firebaseUrl = 'https://select-ai-firebase-default-rtdb.europe-west1.firebasedatabase.app/.json';
+
+    // Data to be sent
+    var data = {
+      feedback: feedback,
+      date: date,
+      userAgent: userAgent,
+      connection: connection
+    };
+
+    // Send a POST request to Firebase
+    fetch(firebaseUrl, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      // Clear the input field
+      document.getElementById('submitFeedbackInput').value = '';
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  };
+
+  document.getElementById('submitFeedbackButton').addEventListener('click', submitFeedback);
+
+  document.getElementById('submitFeedbackInput').addEventListener('keyup', function(event) {
+    // 'Enter' is the "Enter" key on the keyboard
+    if (event.key === 'Enter') {
+      // Cancel the default action, if needed
+      event.preventDefault();
+      // Trigger the button element with a click
+      document.getElementById('submitFeedbackButton').click();
+    }
+  });
+});
+
+
+
 

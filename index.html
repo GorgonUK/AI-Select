@@ -67,7 +67,7 @@
               <div class="col-md-6">
                 <button class="btn btn-primary" id="saveSettingsButton" data-mdb-ripple-color="dark"
                   data-mdb-toggle="modal" data-mdb-target="#select-ai-modal-save-settings">
-                  Save Settings
+                  Save
                 </button>
               </div>
             </div>
@@ -117,8 +117,26 @@
             </div>
           </div>
         </div>
+        <div class="card mt-3">
+          <div class="card-body animate__animated animate__fadeInUp animate__delay-0.9s animate__faster">
+            <h4 class="">User Feedback</h4>
+            <div class="form-outline mt-3" data-toggle="tooltip"
+            title="">
+            <input type="text" id="submitFeedbackInput" class="form-control form-control-lg" />
+            <label class="form-label" for="formControlLg">What did you think?</label>
+          </div>
+          <div class="row mt-4 mb-2">
+            <div class="col-md-6">
+              <button class="btn btn-primary" id="submitFeedbackButton" data-mdb-ripple-color="dark"
+                data-mdb-toggle="modal" data-mdb-target="#select-ai-modal-submit-feedback">
+                Submit
+              </button>
+            </div>
+          </div>
+          </div>
+        </div>
       </div>
-      <!-- Modal -->
+      <!-- Save Settings Modal -->
       <div class="modal top fade animate__animated animate__fadeIn" id="select-ai-modal-save-settings" tabindex="-1"
         aria-labelledby="select-ai-modal-save-settingsLabel" aria-hidden="true" data-mdb-backdrop="true"
         data-mdb-keyboard="true">
@@ -129,7 +147,7 @@
                 Saved</h5>
               <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body"> Your settings have been successfully saved.</div>
+            <div class="modal-body"> Settings have been saved successfully.</div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-mdb-ripple-color="dark" data-mdb-dismiss="modal">
                 OK
@@ -138,6 +156,26 @@
           </div>
         </div>
       </div>
+       <!-- Feedback Sent Modal -->
+       <div class="modal top fade animate__animated animate__fadeIn" id="select-ai-modal-submit-feedback" tabindex="-1"
+       aria-labelledby="select-ai-modal-submit-feedbackLabel" aria-hidden="true" data-mdb-backdrop="true"
+       data-mdb-keyboard="true">
+       <div class="modal-dialog modal-sm ">
+         <div class="modal-content">
+           <div class="modal-header">
+             <h5 class="modal-title" id="select-ai-modal-submit-feedbackLabel">
+               Feedback submitted</h5>
+             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+           </div>
+           <div class="modal-body">Thank you for prividing your feedback.</div>
+           <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-mdb-ripple-color="dark" data-mdb-dismiss="modal">
+               OK
+             </button>
+           </div>
+         </div>
+       </div>
+     </div>
       <!-- Modal End -->
       <div class="text-center p-4 mt-4" style="background-color: rgba(0, 0, 0, 0.05);">
         Developed by <a href="https://github.com/GorgonUK/" target="_blank">George Kontus</a> &copy; <span

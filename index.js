@@ -104,8 +104,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   }
 });
 
-
-
 async function handleSelectAIClick(x, y, selectedText) {
 
   if (overlay) {
