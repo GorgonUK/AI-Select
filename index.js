@@ -574,12 +574,13 @@ async function handleSelectAIClick(x, y, selectedText) {
 
         localStorage.setItem(`history_${tabId}`, JSON.stringify(history));
 
-        aiText.textContent = messageContent;
+        aiText.innerHTML = marked.parse(messageContent);
+        
         loading.style.display = 'none'
         userInputField.style.display = 'block';
         submitButton.style.display = 'block';
         aiText.style.display = 'block'
-        if (aiText.textContent) {
+        if (aiText.innerHTML) {
           copyImageDiv.style.display = 'block'
         }
         userInputHeader.style.display = 'block';

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Select AI",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Enhance browsing with Select AI: Multilingual convos, contextual queries, effortless history.",
   "permissions": [
     "tabs",
@@ -26,7 +26,7 @@
         "https://*/*"
       ],
       "js": [
-        "index.js"
+        "/assets/js/markdown-parser.js","index.js"
       ]
     }
   ],
