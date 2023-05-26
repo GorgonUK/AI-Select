@@ -594,7 +594,7 @@ async function handleSelectAIClick(x, y, selectedText) {
             audio.style.marginTop = '20px';
             audio.style.width = '100%';
             audio.controls = true;
-            audio.style.marginTop = '20px';
+            audio.style.marginBottom = '20px';
             audio.style.width = '100%';
             contentDiv.insertBefore(audio, copyImageDiv.nextSibling);
             window.SelectAIGlobals.audioElement = audio;
