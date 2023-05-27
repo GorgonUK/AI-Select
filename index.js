@@ -243,6 +243,7 @@ async function handleSelectAIClick(x, y, selectedText) {
   overlay.style.marginLeft = 'auto';
   overlay.style.marginRight = 'auto';
   overlay.style.width = '600px';
+  overlay.style.minWidth = '600px';
   overlay.style.marginTop = '20px';
   overlay.style.zIndex = '9999';
   overlay.style.overflow = 'auto';
@@ -255,6 +256,9 @@ async function handleSelectAIClick(x, y, selectedText) {
   overlay.style.fontWeight = 'inherit';
   overlay.style.fontFamily = 'inherit';
   overlay.style.paddingBottom = '25px';
+  overlay.style.resize = 'horizontal';
+
+  
 
   // Create modal header
   const modalHeader = document.createElement('div');
