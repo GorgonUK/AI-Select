@@ -485,22 +485,7 @@ async function handleSelectAIClick(x, y, selectedText) {
       async function updateModalTitle(result) {
         // Prepare the message prompt
         let prompt = selectedText;
-
-        const messages = [
-          {
-            role: 'system',
-            content:
-              'You must only respond in the following language: ' +
-              result.selectedLanguage +
-              ', summarise/categorise the user input in less than 25 characters and only respond with it.\n\nRole: AI assistant\n\nYour purpose is to assist users by providing helpful and informative responses in the selected language.',
-          },
-          {
-            role: 'user',
-            content: prompt,
-          },
-        ];
-        
-        
+      
         // Send request to OpenAI API
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
@@ -510,24 +495,30 @@ async function handleSelectAIClick(x, y, selectedText) {
           },
           body: JSON.stringify({
             model: 'gpt-3.5-turbo',
-            messages: messages,
+            messages: [{
+              role: 'system',
+              content: 'YOU MUST FOLLOW ALL THE FOLLOWING INSTRUCTIONS: You must only respond in the following language: ' + result.selectedLanguage + ', categorise the user input in less than 25 characters and only respond with the it.\n\nRole: AI assistant\n\nYour purpose is to assist users by providing helpful and informative responses in the selected language.'
+            }, {
+              role: 'user',
+              content: prompt
+            }]
           })
         });
-
+      
         // Check for errors
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-
+      
         // Get API response
         const apiResponse = await response.json();
-
+      
         // Grab the latest assistant message
         const message = apiResponse.choices[0].message.content;
         return message; // return the message
       }
-
-
+      
+      
       updateModalTitle(result)
         .then(message => {
           modalTitle.textContent = message; // Update the text content
@@ -536,8 +527,8 @@ async function handleSelectAIClick(x, y, selectedText) {
           // Handle error
           console.error('An error occurred:', error);
         });
-
-
+      
+      
       //Remove hanging audio
       function removeElementById(elementId) {
         const element = document.getElementById(elementId);
@@ -559,7 +550,6 @@ async function handleSelectAIClick(x, y, selectedText) {
       aiText.style.display = 'none'
       copyImageDiv.style.display = 'none'
       userInputHeader.style.display = 'none';
-
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -585,7 +575,7 @@ async function handleSelectAIClick(x, y, selectedText) {
         localStorage.setItem(`history_${tabId}`, JSON.stringify(history));
 
         aiText.innerHTML = marked.parse(messageContent);
-
+        
         loading.style.display = 'none'
         userInputField.style.display = 'block';
         submitButton.style.display = 'block';
