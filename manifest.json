@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Select AI",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Enhance browsing with Select AI: Multilingual convos, contextual queries, effortless history.",
   "permissions": [
     "tabs",

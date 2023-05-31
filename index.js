@@ -7,7 +7,6 @@ let loader;
 let userInputDiv;
 let userInputField;
 let submitButton;
-let audio;
 let lastSelectionCoords = null;
 let history = [];
 
@@ -258,8 +257,6 @@ async function handleSelectAIClick(x, y, selectedText) {
   overlay.style.paddingBottom = '25px';
   overlay.style.resize = 'horizontal';
 
-  
-
   // Create modal header
   const modalHeader = document.createElement('div');
   modalHeader.className = 'select-ai-modal-header';
@@ -454,7 +451,6 @@ async function handleSelectAIClick(x, y, selectedText) {
     copyImageDiv.style.marginLeft = "5px";
     copyImageDiv.style.display = 'none';
 
-
     // Append the overlay and image elements to the same parent
     copyImageDiv.appendChild(copyImage);
     copyImageDiv.appendChild(document.createTextNode("Copy"))
@@ -531,22 +527,6 @@ async function handleSelectAIClick(x, y, selectedText) {
           // Handle error
           console.error('An error occurred:', error);
         });
-      
-      
-      //Remove hanging audio
-      function removeElementById(elementId) {
-        const element = document.getElementById(elementId);
-
-        if (element) {
-          // Element exists, remove it
-          element.parentNode.removeChild(element);
-        } else {
-          // Element doesn't exist, log to console
-          console.log(`Element with id ${elementId} was not found.`);
-        }
-      }
-
-      removeElementById('ai-select-audio-element');
 
       loading.style.display = 'block'
       userInputField.style.display = 'none';
@@ -588,48 +568,7 @@ async function handleSelectAIClick(x, y, selectedText) {
           copyImageDiv.style.display = 'block'
         }
         userInputHeader.style.display = 'block';
-        async function generateTTS(messageContent) {
-          // create an audio element
-          let audio = window.SelectAIGlobals.audioElement;
-
-          if (!audio) {
-            audio = new Audio();
-            audio.id = 'ai-select-audio-element';
-            audio.controls = true;
-            audio.style.marginTop = '20px';
-            audio.style.width = '100%';
-            audio.controls = true;
-            audio.style.marginBottom = '20px';
-            audio.style.width = '100%';
-            contentDiv.insertBefore(audio, copyImageDiv.nextSibling);
-            window.SelectAIGlobals.audioElement = audio;
-          }
-
-          const ttsResponse = await fetch('https://api.tartunlp.ai/text-to-speech/v2', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'audio/wav'
-            },
-            body: JSON.stringify({
-              "text": messageContent,
-              "speaker": "vesta",
-              "speed": 1
-            }),
-          });
-
-          if (ttsResponse.ok) {
-            const blob = await ttsResponse.blob();
-            const url = URL.createObjectURL(blob);
-            audio.src = url;
-          }
-
-          loading.style.display = 'none';
-        }
-        // Trigger TTS function when text changes
-        if (result.selectedLanguage === "Estonian") {
-          generateTTS(messageContent);
-        }
+      
       }
     } catch (error) {
       if (error.response && error.response.status === 429) {
@@ -661,8 +600,6 @@ async function handleSelectAIClick(x, y, selectedText) {
       }
     }
   }
-
-
 
   //contentDiv.appendChild(header);
   contentDiv.appendChild(body);
